@@ -1,0 +1,28 @@
+@import "./../tokens/colors";
+@import "./../tokens/spacings";
+@import "./../tokens/typos";
+
+
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: $color-bg-claro; 
+}
+ 
+::-webkit-scrollbar-thumb {
+  background: $color-oscuro; 
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: $color-bg-oscuro; 
+}
+
+
+body {
+  font-family: $Fuente1;
+  color: $color-oscuro;
+  background-color: $color-bg-claro;
+}
+

@@ -1,0 +1,255 @@
+//  ███╗...███╗██╗██╗..██╗██╗███╗...██╗███████╗....██╗...██╗
+//  ████╗.████║██║╚██╗██╔╝██║████╗..██║██╔════╝....╚██╗.██╔╝
+//  ██╔████╔██║██║.╚███╔╝.██║██╔██╗.██║███████╗.....╚████╔╝.
+//  ██║╚██╔╝██║██║.██╔██╗.██║██║╚██╗██║╚════██║......╚██╔╝..
+//  ██║.╚═╝.██║██║██╔╝.██╗██║██║.╚████║███████║.......██║...
+//  ╚═╝.....╚═╝╚═╝╚═╝..╚═╝╚═╝╚═╝..╚═══╝╚══════╝.......╚═╝...
+//  ........................................................
+//  ███████╗██╗...██╗███╗...██╗.██████╗██╗.██████╗.███╗...██╗███████╗███████╗
+//  ██╔════╝██║...██║████╗..██║██╔════╝██║██╔═══██╗████╗..██║██╔════╝██╔════╝
+//  █████╗..██║...██║██╔██╗.██║██║.....██║██║...██║██╔██╗.██║█████╗..███████╗
+//  ██╔══╝..██║...██║██║╚██╗██║██║.....██║██║...██║██║╚██╗██║██╔══╝..╚════██║
+//  ██║.....╚██████╔╝██║.╚████║╚██████╗██║╚██████╔╝██║.╚████║███████╗███████║
+//  ╚═╝......╚═════╝.╚═╝..╚═══╝.╚═════╝╚═╝.╚═════╝.╚═╝..╚═══╝╚══════╝╚══════╝
+//  .........................................................................
+@import "../Tokens/colors";
+@import "../Tokens/spacings";
+@import "../Tokens/typos";
+
+// Otorga mayuscula automatica al tipo de fuente 2
+
+@mixin titulos($fuente) {
+	@if $fuente==$Fuente1 {
+		font-family: $Fuente1;
+	} @else {
+		font-family: $Fuente2;
+		text-transform: uppercase;
+	}
+}
+
+//Funcion para el texto responsivo
+@function calculateRem($size) {
+	$remSize: $size / 16px;
+	@return $remSize * 1rem;
+}
+
+@mixin headers {
+	padding: $space_x3 0;
+	h1 {
+		letter-spacing: $space;
+		font-weight: $light;
+		color: $color-oscuro;
+		@include font-size($h2);
+	}
+	img {
+		margin: $space_x2 0;
+		height: 10px;
+	}
+	p {
+		letter-spacing: $space;
+		font-weight: $light;
+		color: $color-oscuro;
+		@include font-size($p);
+	}
+}
+
+// Estilo de los botones
+@mixin botones {
+	position: relative;
+	display: inline;
+	border-radius: $space_half;
+	&:hover {
+		color: get-opacity($color-oscuro, 1);
+	}
+	&::before {
+		content: "";
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		z-index: -1;
+		width: 100%;
+		height: 100%;
+		background: $color-primario;
+		transform: scaleX(0);
+		transform-origin: left;
+		transition: transform 0.8s ease-in-out;
+	}
+	&:hover::before {
+		transform: scaleX(1);
+	}
+}
+
+@mixin callToActions {
+	padding: $space $space_x2;
+	margin: 0 auto;
+	color: get-opacity($color-claro, 1) !important;
+	border: 3px solid $color-bg-oscuro;
+	background-color: $color-bg-oscuro;
+	transition: 0.5s ease-in-out;
+	&:hover {
+		text-decoration: none;
+		background-color: get-opacity($color-primario, 1);
+	}
+}
+
+@mixin sombras {
+	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+}
+
+// Estilo de los inputs
+@mixin inputs {
+	padding: $space;
+	width: 100%;
+	font-size: $p;
+	border: none;
+	border: 2px solid $color-oscuro;
+	outline: none;
+	background-color: $color-claro;
+	&:placeholder {
+		color: $color-oscuro;
+	}
+	@include media(desktop-s) {
+		width: 100%;
+	}
+}
+
+// Estilo de los selects
+@mixin selects {
+	padding: $space;
+	width: 100%;
+	font-size: $p;
+	border: none;
+	border: 1px solid $color-oscuro;
+	outline: none;
+	background-color: $color-secundario;
+	cursor: pointer;
+	&:placeholder {
+		color: $color-oscuro;
+	}
+}
+@mixin textareas {
+	border-radius: $space_half;
+	padding: $space;
+	width: 100%;
+	font-size: $p;
+	border: none;
+	outline: none;
+	background-color: $color-claro;
+	&:placeholder {
+		color: $color-oscuro;
+	}
+	@include media(desktop-s) {
+		width: 100%;
+	}
+}
+
+@mixin modals {
+	display: none;
+	position: fixed;
+	z-index: 1;
+	padding-top: 150px;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	overflow: auto;
+	background-color: $color-bg-claro;
+	background-image: url(/images/modals--patron.png);
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: center;
+	&__content {
+		padding: 10px;
+		margin: auto;
+		width: 90%;
+		border-radius: $space;
+		color: $color-primario;
+		background-color: $color-bg-claro;
+		@include sombras;
+	}
+	&__titulo {
+		@include font-size($h2);
+		@include titulos($Fuente1);
+	}
+	.modal--close {
+		float: right;
+		cursor: pointer;
+	}
+	@include media(desktop-s) {
+		&__content {
+			padding: 40px;
+			margin: auto;
+			width: 50%;
+			border-radius: $space;
+			color: $color-primario;
+			background-color: $color-bg-claro;
+			@include sombras;
+		}
+		&__titulo {
+			@include font-size($h2);
+			@include titulos($Fuente1);
+		}
+		.modal--close {
+			float: right;
+			cursor: pointer;
+		}
+	}
+}
+
+@mixin caja {
+	width: 400px;
+	text-align: center;
+	border: 1px solid $color-oscuro;
+	img {
+		width: 100%;
+		height: 400px;
+		object-fit: cover;
+		border-bottom: 1px solid $color-oscuro;
+	}
+	h1 {
+		padding: $space 0;
+		text-transform: uppercase;
+		letter-spacing: 3px;
+		color: $color-oscuro;
+		@include font-size($p);
+	}
+	p {
+		font-family: $Fuente2;
+		font-weight: $normal;
+		color: $color-variacion;
+		letter-spacing: $space_half;
+		@include font-size($p);
+	}
+	&:hover {
+		background-color: get-opacity($color-secundario, 0.8);
+		img {
+			opacity: 0.8;
+		}
+	}
+}
+
+//Funcion para el texto responsivo
+@function calculateRem($size) {
+	$remSize: $size / 16px;
+	@return $remSize * 1rem;
+}
+
+// Dependiendo del tamaño del texto se selecciona un alto de linea automatica
+@mixin font-size($size) {
+	font-size: $size;
+	font-size: calculateRem($size);
+	line-height: calculateRem($size) * 1.5;
+}
+
+// Opacidad
+@function get-opacity($color, $amount) {
+	@return rgba($color, $amount);
+}
+
+@each $header, $size in (h1: 30px, h2: 25px, h3: $space_x2) {
+	#{$header} {
+		//Se declara el elemento
+		font-size: $size; //Le decimos que por cada etiqueta h imprimimos los valores
+		margin: 0;
+	}
+}
