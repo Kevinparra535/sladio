@@ -1,23 +1,25 @@
 export const sladioConfig = {
-
-  mode: 'development',
+  mode: "development",
 
   slidersNames: ["slider1"], // Nombre del slider, funciona para usar varios sliders en el mismo HTML
 
   navsButtons: {
     // Nombre de los botones de navegación, funciona para usar varios botones de navegación en el mismo HTML
-    slider1: ["btn__prev", "btn__next"],
+    slider1: { navsActive: true, btnPrev: "btn__prev", btnNext: "btn__next" },
   },
 
-  bullets: {
-    active: true,
+  pagination: {
+    pagActive: true,
+    type: "bullets", // bullets, fraction, progressbar, scrollbar,
     interactive: true,
+    dynamicBullets: true,
   },
 
   autoSlide: {
     active: true,
     interval: 5000,
   },
+
   JSON: [],
 
   supportIE: true,
