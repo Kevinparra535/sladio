@@ -30,7 +30,6 @@ class Sladio {
       this.firtsSlider = initialSlider[0]
       const defaultStyles = document.querySelector("#" + this.firtsSlider).getAttribute("data-style");
 
-
       if (defaultStyles === "default") {
         navsActive = false;
         pagActive = false;
@@ -38,7 +37,11 @@ class Sladio {
         this.createDefaultSlider(navsActive, pagActive);
       }
 
-      console.log(initialSlider[0]);
+      if(defaultStyles === "custom" || !defaultStyles || defaultStyles === null) {
+        // Esta es la configuración global, aqui funciona todo
+      }
+
+      console.log(this.firtsSlider);
       console.log(navsActive, btnPrev, btnNext);
       console.log(pagActive, type, interactive, dynamicBullets);
 
@@ -53,7 +56,7 @@ class Sladio {
   }
 
   // Creamos el sistema por default del slider
-  createDefaultSlider(navsActive, pagActive) {
+  createDefaultSlider() {
     let index = 0;
     let dragStart = 0;
     let dragEnd = 0;
