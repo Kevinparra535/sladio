@@ -14,8 +14,10 @@
   </head>
   <body>
     <!-- Data style = demo1, demo2, demo3, custom -->
-    <main class="sladio" id="slider1" data-style="default">
-        <div class="sladio__items" draggable="true" ondragstart="event.dataTransfer.setData('text/plain',null)">item1</div>
+    <div class="sladio" id="slider1" data-style="default">
+      <div class="sladio__container">
+        <div class="sladio__items">item0</div>
+        <div class="sladio__items">item1</div>
         <div class="sladio__items">item2</div>
         <div class="sladio__items">item3</div>
         <div class="sladio__items">item4</div>
@@ -24,7 +26,8 @@
         <div class="sladio__items">item8</div>
         <div class="sladio__items">item9</div>
         <div class="sladio__items">item10</div>
-    </main>
+      </div>
+    </div>
 
     <script type="module" src="../src/index-dist.js"></script>
   </body>

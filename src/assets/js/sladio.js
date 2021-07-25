@@ -5,6 +5,8 @@ class Sladio {
     this.init = this.init.bind(this);
     this.report = this.report.bind(this);
     this.createDefaultSlider = this.createDefaultSlider.bind(this);
+    this.nextSlide = this.nextSlide.bind(this);
+    this.prevSlide = this.prevSlide.bind(this);
 
     this.init();
   }
@@ -12,29 +14,38 @@ class Sladio {
   // Método inicial
   init() {
     // leemos toda la configuración y asignamos funciones
-    let initialContainer = this.config.slidersNames;
+    let initialSlider = this.config.slidersNames;
     let navButtons = this.config.navsButtons;
     let pagination = this.config.pagination;
 
     // Si no tenemos sliders nos lanza el aviso en el report
-    if (!initialContainer.length) {
+    if (!initialSlider.length) {
       this.report("No hay sliders para mostrar");
     }
 
     // Si tenemos un sliders inicia de manera normal
-    if (initialContainer.length === 1) {
+    if (initialSlider.length === 1) {
       let { navsActive, btnPrev, btnNext } = navButtons.slider1;
       let { pagActive, type, interactive, dynamicBullets } = pagination;
+      this.firtsSlider = initialSlider[0]
+      const defaultStyles = document.querySelector("#" + this.firtsSlider).getAttribute("data-style");
 
-      console.log(initialContainer[0]);
+
+      if (defaultStyles === "default") {
+        navsActive = false;
+        pagActive = false;
+
+        this.createDefaultSlider(navsActive, pagActive);
+      }
+
+      console.log(initialSlider[0]);
       console.log(navsActive, btnPrev, btnNext);
       console.log(pagActive, type, interactive, dynamicBullets);
 
-      this.createDefaultSlider(initialContainer[0]);
     }
 
     // Si tenemos dos sliders nos redirige a este metodo
-    if (initialContainer.length >= 2) {
+    if (initialSlider.length >= 2) {
       for (let i = 0; i < initialContainer.length; i++) {
         console.log(initialContainer[i]);
       }
@@ -42,48 +53,61 @@ class Sladio {
   }
 
   // Creamos el sistema por default del slider
-  createDefaultSlider(initialContainer) {
+  createDefaultSlider(navsActive, pagActive) {
     let index = 0;
     let dragStart = 0;
     let dragEnd = 0;
-    const container = document.querySelector(`#${initialContainer}`);
+
+    const slider = document.querySelector(`#${this.firtsSlider}`);
+    const container = slider.querySelector(".sladio__container");
     const items = container.querySelectorAll(".sladio__items");
-    const virtualWidth = 100 * items.length + "%";
-    container.style.width = virtualWidth;
-
-    for (let i = 0; i < items.length; i++) {
-      // items[i].style.display = 'none';
-    }
-
-    items[0].style.display = "flex";
 
     const changeSlide = (e) => {
+      e.preventDefault();
 
       dragEnd = e.clientX;
 
-
       if (dragEnd < dragStart) {
+        if (index < items.length - 1) {
+          console.log("Next");
 
+          index++;
+          this.nextSlide()
+        }
 
-        // Estamos aqui, necesitamos hacer slide
-        index++
-        console.log("Next");
-        console.log(index);
-        container.style.transform = `translate(${nexItem}px, 0)`;
-        let actualItem = items[index].clientWidth;
-        let nexItem = items[(index + 1)].clientWidth;
-
-        items[index].style.transform = `translate(-${nexItem}, 0)`;
       } else {
-        console.log("Prev");
+        if (index > 0) {
+          console.log("Prev");
+          index--;
+        }
+
+        if (index < 0) {
+          index = 0;
+        }
+
+        this.prevSlide()
       }
-    }
+    };
 
-    container.addEventListener("drag", (e) => { }, false);
+    container.addEventListener("mousedown", (e) => (e.preventDefault(), (dragStart = e.clientX)));
 
-    container.addEventListener("dragstart", (e) => (dragStart = e.clientX), false);
+    container.addEventListener("mouseup", changeSlide, true);
+  }
 
-    container.addEventListener("dragend", (e) => changeSlide(e), false);
+  // Muestra el siguiente item
+  nextSlide() {
+    const slider = document.querySelector(`#${this.firtsSlider}`);
+    const container = slider.querySelector(".sladio__container");
+
+    container.scrollLeft = container.scrollLeft + slider.scrollWidth; // Muestra el siguiente item
+  }
+
+  // Muestra el anterior item
+  prevSlide() {
+    const slider = document.querySelector(`#${this.firtsSlider}`);
+    const container = slider.querySelector(".sladio__container");
+
+    container.scrollLeft = container.scrollLeft - slider.scrollWidth; // Muestra el anterior item
   }
 
   // Report nos sirve para mostrarle al usuario que esta fallando
