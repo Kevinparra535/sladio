@@ -1,6 +1,6 @@
 {
-  "name": "Sladio",
-  "version": "1.0.0",
+  "name": "sladio",
+  "version": "1.0.1",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -8,25 +8,21 @@
     "build": "webpack --mode production",
     "start": "webpack serve --open --mode development"
   },
-  "keywords": [],
+  "bin": {
+    "sladio": "bind/global.js"
+  },
+  "preferGlobal": true,
+  "keywords": [
+    "JavaScript",
+    "node",
+    "npm"
+  ],
   "author": "Kevin Parra Lopez <kevinparra535@gmail.com>",
   "license": "MIT",
+  "dependencies": {
+    "sladio": "^1.0.1"
+  },
   "devDependencies": {
-    "@babel/core": "^7.14.8",
-    "@babel/plugin-transform-runtime": "^7.14.5",
-    "@babel/preset-env": "^7.14.8",
-    "babel-loader": "^8.2.2",
-    "clean-webpack-plugin": "^4.0.0-alpha.0",
-    "copy-webpack-plugin": "^9.0.1",
-    "css-loader": "^6.2.0",
-    "css-minimizer-webpack-plugin": "^3.0.2",
-    "html-webpack-plugin": "^5.3.2",
-    "mini-css-extract-plugin": "^2.1.0",
-    "node-sass": "^6.0.1",
-    "sass-loader": "^12.1.0",
-    "terser-webpack-plugin": "^5.1.4",
-    "webpack": "^5.45.1",
-    "webpack-cli": "^4.7.2",
-    "webpack-dev-server": "^3.11.2"
+    "cypress": "^8.0.0"
   }
 }

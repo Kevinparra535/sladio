@@ -1,11 +1,16 @@
 export const sladioConfig = {
   mode: "development",
 
-  slidersNames: ["slider1"], // Nombre del slider, funciona para usar varios sliders en el mismo HTML
+  slidersNames: ["slider"], // Nombre del slider, funciona para usar varios sliders en el mismo HTML
 
   navsButtons: {
     // Nombre de los botones de navegación, funciona para usar varios botones de navegación en el mismo HTML
-    slider1: { navsActive: true, btnPrev: "btn__prev", btnNext: "btn__next" },
+    slider1: {
+      navsActive: true,
+      btnPrev: "btn__prev", // Nombre de la clase que contiene el botón previo
+      btnNext: "btn__next", // Nombre de la clase que contiene el botón siguiente
+      position: "center", // posición preestablecida de los botones de navegación
+    },
   },
 
   pagination: {
