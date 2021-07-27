@@ -1,7 +1,7 @@
 {
   "name": "sladio",
-  "version": "1.0.1",
-  "description": "",
+  "version": "0.1.2",
+  "description": "Sladio es un Slider muy customizable",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -19,9 +19,6 @@
   ],
   "author": "Kevin Parra Lopez <kevinparra535@gmail.com>",
   "license": "MIT",
-  "dependencies": {
-    "sladio": "^1.0.1"
-  },
   "devDependencies": {
     "cypress": "^8.0.0"
   }
