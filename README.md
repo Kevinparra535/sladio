@@ -4,6 +4,8 @@ Slider customizable
 
 ## New Fetures 🤩
 
+
+- Se crearon las propiedades en los objetos de configuración, esto por si algo falta
 - Se crearon los botones de navegación
 - Si hay un contenedor con un nombre erróneo o inexistente lo clona, crea uno nuevo y elimina el anterior
 
@@ -22,6 +24,9 @@ Slider customizable
 
 ## Progreso (Bitácoras) 🚀
 
+### (27/07/2021)
+
+- Se crearon las propiedades en los objetos de configuración, esto por si algo falta
 ### (27/07/2021)
 
 - Se crearon los botones de navegación

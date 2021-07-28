@@ -14,46 +14,43 @@ export const sladioConfig = {
   },
 
   pagination: {
-    pagActive: true,
+    pagActive: false,
     type: "bullets", // bullets, fraction, progressbar, scrollbar,
-    interactive: true,
-    dynamicBullets: true,
+    interactive: false,
+    dynamicBullets: false,
   },
 
   autoSlide: {
-    active: true,
-    interval: 5000,
+    active: false,
+    interval: 0,
   },
 
   JSON: [],
 
-  supportIE: true,
+  supportIE: false,
 
-  responsive: [
-    {
-      breakpoint: 991, //Tamaño mínimo en Desktop
-      settings: {
-        itemsToShow: 3, // Numbers: min 1 - max 4, Default 1
-        itemsToScroll: 1, // NO LO MUEVAS
-        infinity: true, // Scoll inifite, False default
-        dotsAreVisibles: true, // Only works on desktop
+  // Configuración personalizada del slider
+  customSettings: {
+    slider1: {
+      desktop: {
+        breakpoint: 991,
+        infinity: true,
+        dotsAreVisibles: true,
+        itemsToShow: 3,
+        itemsToScroll: 1,
       },
-    },
-    {
-      breakpoint: 990, //Tamaño máximo en tablet
-      settings: {
-        itemsToShow: 2, // Numbers: min 1 - max 3, Default 1
+      tablet: {
+        breakpoint: 990,
+        itemsToShow: 2,
+        itemsToScroll: 1,
+        infinity: true,
+      },
+      mobile: {
+        breakpoint: 730,
+        itemsToShow: 1,
         itemsToScroll: 1,
         infinity: true,
       },
     },
-    {
-      breakpoint: 730, // Tamaño máximo en mobile
-      settings: {
-        itemsToShow: 1, // Numbers: min 1 - max 2, Default 1
-        itemsToScroll: 1,
-        infinity: true,
-      },
-    },
-  ],
+  },
 };

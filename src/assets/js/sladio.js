@@ -1,6 +1,6 @@
 class Sladio {
   constructor(config) {
-    this.config = config;
+    this._config = config;
     this.firtsSlider = null;
     this.index = 0;
     this.dragStart = 0;
@@ -13,12 +13,13 @@ class Sladio {
     this.prevSlide = this.prevSlide.bind(this);
     this.customSlider = this.customSlider.bind(this);
     this.createNavsButtons = this.createNavsButtons.bind(this);
+    this.createDefaultSettings = this.createDefaultSettings.bind(this);
 
-    if (!Object.keys(this.config).length) {
+    if (!Object.keys(this._config).length) {
       // Si no recibe un objeto con la configuración, creamos una configuración global
       console.log("No hay un objeto de configuración");
 
-      this.config = {
+      this._config = {
         mode: "development",
         slidersNames: ["slider"],
         navsButtons: {
@@ -41,45 +42,115 @@ class Sladio {
         },
         JSON: [],
         supportIE: true,
-      };
-    } else {
-      // Si recibe un objeto de configuración lo asignamos a nuestra variable
-
-      console.log("Recibe una configuración");
-
-      this.config = {
-        mode: "development" || this.config.mode,
-        slidersNames: ["slider"] || this.config.slidersNames,
-        navsButtons: {
+        customSettings: {
           slider1: {
-            navsActive: false || this.config.navsButtons.slider1.navsActive,
-            btnPrev: null || this.config.navsButtons.slider1.btnPrev,
-            btnNext: null || this.config.navsButtons.slider1.btnNext,
-            position: this.config.navsButtons.slider1.position || "center",
+            desktop: {
+              breakpoint: 991,
+              infinity: true,
+              dotsAreVisibles: true,
+              itemsToShow: 3,
+              itemsToScroll: 1,
+            },
+            tablet: {
+              breakpoint: 990,
+              itemsToShow: 2,
+              itemsToScroll: 1,
+              infinity: true,
+            },
+            mobile: {
+              breakpoint: 730,
+              itemsToShow: 1,
+              itemsToScroll: 1,
+              infinity: true,
+            },
           },
         },
-        pagination: {
-          pagActive: false || this.config.pagination.pagActive,
-          type: "none" || this.config.pagination.type,
-          interactive: false || this.config.pagination.interactive,
-          dynamicBullets: false || this.config.pagination.dynamicBullets,
-        },
-        autoSlide: {
-          active: false || this.config.autoSlide.active,
-          interval: 0 || this.config.autoSlide.interval,
-        },
-        JSON: [] || this.config.JSON,
-        supportIE: true || this.config.supportIE,
       };
+    } else {
+      this.createDefaultSettings();
     }
 
     this.init();
   }
 
+  createDefaultSettings() {
+    // Si recibe un objeto de configuración lo asignamos a nuestra variable y Verificamos si no hay un parámetro se lo asignamos
+
+    // Agregamos el modo en el entorno
+    if (!this._config.mode) {
+      this._config.mode = "development";
+    }
+
+    // Si no hay configuracion de navs lo creamos
+    if (!this._config.navsButtons) {
+      this._config.navsButtons = {
+        slider1: {},
+      };
+    }
+
+    // Si no hay un objeto con los parametros del primer slider lo creamos
+    if (!this._config.navsButtons.slider1) {
+      this._config.navsButtons.slider1 = {
+        navsActive: false,
+        btnPrev: null,
+        btnNext: null,
+        position: "center"
+      };
+    }
+
+    if (!this._config.pagination) {
+      this._config.pagination = {
+        pagActive: false,
+        type: "none", // bullets, fraction, progressbar, scrollbar,
+        interactive: false,
+        dynamicBullets: false,
+      }
+    }
+
+    if (!this._config.autoSlide) {
+      this._config.autoSlide = {
+        active: false,
+        interval: 0,
+      }
+    }
+
+    if (!this._config.JSON) {
+      this._config.JSON = [];
+    }
+
+    if (!this._config.customSettings) {
+      this._config.customSettings = {};
+    }
+
+    if (!this._config.customSettings.slider1) {
+      this._config.customSettings.slider1 = {
+        desktop: {
+          breakpoint: 991,
+          infinity: true,
+          dotsAreVisibles: false,
+          itemsToShow: 1,
+          itemsToScroll: 1,
+        },
+        tablet: {
+          breakpoint: 990,
+          itemsToShow: 1,
+          itemsToScroll: 1,
+          infinity: true,
+        },
+        mobile: {
+          breakpoint: 730,
+          itemsToShow: 1,
+          itemsToScroll: 1,
+          infinity: true,
+        },
+      };
+    }
+  }
+
   // Método inicial
   init() {
     // leemos toda la configuración y asignamos funciones
-    const initialSlider = this.config.slidersNames;
+    const initialSlider = this._config.slidersNames;
 
     // Si no tenemos sliders nos lanza el aviso en el report
     if (!initialSlider.length) {
@@ -147,7 +218,6 @@ class Sladio {
       }
     };
 
-    console.log("Modo Default");
 
     container.addEventListener("mousedown", (e) => (e.preventDefault(), (this.dragStart = e.clientX)));
     container.addEventListener("mouseup", changeSlide, true);
@@ -156,7 +226,7 @@ class Sladio {
   // Sistema custom
   customSlider() {
     console.log("Modo custom");
-    const { navsButtons } = this.config
+    const { navsButtons } = this._config
     const slider = document.querySelector(`#${this.firtsSlider}`);
     const container = slider.querySelector(".sladio__container");
 
@@ -187,6 +257,7 @@ class Sladio {
 
     // Activamos los movimientos básicos del slider
     this.createDefaultSlider()
+    console.log(this._config);
 
 
     // Leemos los valores de la configuración y empezamos a crear y mostrar elementos necesarios
@@ -262,9 +333,6 @@ class Sladio {
 
     container.appendChild(prevButton);
     container.appendChild(nextButton);
-
-    console.log(position)
-
   }
 
   // Muestra el siguiente item
