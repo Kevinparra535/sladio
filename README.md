@@ -24,12 +24,16 @@ Slider customizable
 ## Paquetes 📦
 
 - Se agrego Cypress al proyecto
+- Se agrega ESLINT, BABEL, PRETTIER
+
 
 ## Progreso (Bitácoras) 🚀
 
 ### (29/07/2021)
 - Se agregan el multi slide en el mismo HTML
 - Bug cuando se hay dos sliders, no detecta la desactivacion de los slides siguientes al primero
+- Se agrega ESLINT, BABEL, PRETTIER
+
 
 
 ### (27/07/2021)

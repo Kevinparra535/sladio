@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 class Sladio {
   constructor(config) {
     this._config = config;
@@ -14,7 +15,7 @@ class Sladio {
     this.customSlider = this.customSlider.bind(this);
     this.createNavsButtons = this.createNavsButtons.bind(this);
     this.createDefaultSettings = this.createDefaultSettings.bind(this);
-    this.createIndicators = this.createIndicators.bind(this);
+    // this.createIndicators = this.createIndicators.bind(this);
 
     if (!Object.keys(this._config).length) {
       // Si no recibe un objeto con la configuración, creamos una configuración global
@@ -163,8 +164,11 @@ class Sladio {
 
     // Si tenemos un sliders inicia de manera normal
     if (initialSlider.length === 1) {
-      this.firtsSlider = initialSlider[0];
-      const defaultStyles = document.querySelector("#" + this.firtsSlider).getAttribute("data-style");
+      const firtsSlider = initialSlider[0]
+
+      this.firtsSlider = firtsSlider;
+
+      const defaultStyles = document.querySelector(`#${this.firtsSlider}`).getAttribute("data-style");
 
       if (defaultStyles === "default") {
         this.createDefaultSlider();
@@ -188,11 +192,16 @@ class Sladio {
 
     const sliders = document.querySelectorAll('.sladio');
 
-    sliders.forEach((slider, index) => {
+    sliders.forEach((slider) => {
 
       const container = slider.querySelector(".sladio__container");
       const items = container.querySelectorAll(".sladio__items");
-      const { active, desktop, tablet, mobile } = this._config.customSettings[slider.getAttribute("id")];
+      const {
+        active,
+        desktop,
+        tablet,
+        mobile
+      } = this._config.customSettings[slider.getAttribute("id")];
 
       if (active) {
         // Detecta el numero de items por slide y verifica el tamaño de la ventana
@@ -279,10 +288,12 @@ class Sladio {
   // Sistema custom
   customSlider() {
     console.log("Modo custom");
-    const { navsButtons } = this._config
+    const {
+      navsButtons
+    } = this._config
     const sliders = document.querySelectorAll('.sladio');
 
-    sliders.forEach((slider, index) => {
+    sliders.forEach((slider) => {
       const container = slider.querySelector(".sladio__container");
 
       // Si el contenedor no existe, creamos uno
@@ -317,7 +328,9 @@ class Sladio {
 
       // Si los navs están activos
       if (navsButtons) {
-        const { navsActive } = navsButtons[slider.getAttribute("id")];
+        const {
+          navsActive
+        } = navsButtons[slider.getAttribute("id")];
 
         if (navsActive) {
           this.createNavsButtons(navsButtons)
@@ -331,13 +344,17 @@ class Sladio {
     console.log('Navs Activos')
     const sliders = document.querySelectorAll('.sladio');
 
-    sliders.forEach((slider, index) => {
+    sliders.forEach((slider) => {
       const prevButton = document.createElement('button');
       const nextButton = document.createElement('button');
       const textPrev = document.createTextNode('Back');
       const textNext = document.createTextNode('Next');
       const container = slider.querySelector(".sladio__container");
-      const { btnPrev, btnNext, position } = navsButtons[slider.getAttribute("id")];
+      const {
+        btnPrev,
+        btnNext,
+        position
+      } = navsButtons[slider.getAttribute("id")];
 
       prevButton.className = btnPrev;
       nextButton.className = btnNext;
@@ -391,22 +408,32 @@ class Sladio {
   }
 
   // Crea los bullets o indicadores de posición
-  createIndicators() { }
+  // createIndicators() { }
 
   // Muestra el siguiente item
   nextSlide(slider, container) {
-    container.scrollLeft = container.scrollLeft + slider.scrollWidth; // Muestra el siguiente item
+    this.slider = slider
+    this.container = container
+    container.scrollLeft += slider.scrollWidth; // Muestra el siguiente item
   }
 
   // Muestra el anterior item
   prevSlide(slider, container) {
-    container.scrollLeft = container.scrollLeft - slider.scrollWidth; // Muestra el anterior item
+    this.slider = slider
+    this.container = container
+    container.scrollLeft -= slider.scrollWidth; // Muestra el anterior item
   }
 
   // Detecta el numero de items por slide y verifica el tamaño de la ventana
   responsiveSlides(items, desktop, tablet, mobile) {
+    this.items = items
+    this.desktop = desktop
+    this.tablet = tablet
+    this.mobile = mobile
     if (desktop && window.innerWidth >= desktop.breakpoint) {
-      const { breakpoint, infinity, dotsAreVisibles, itemsToShow } = desktop;
+      const {
+        itemsToShow
+      } = desktop;
       const showNumOfItems = items.length / itemsToShow;
       const convertToPercentage = showNumOfItems * 10
 
@@ -416,7 +443,9 @@ class Sladio {
     }
 
     if (tablet && window.innerWidth <= tablet.breakpoint && window.innerWidth >= mobile.breakpoint) {
-      const { breakpoint, infinity, dotsAreVisibles, itemsToShow } = tablet;
+      const {
+        itemsToShow
+      } = tablet;
       const showNumOfItems = items.length / itemsToShow;
       const convertToPercentage = showNumOfItems * 10
 
@@ -426,7 +455,9 @@ class Sladio {
     }
 
     if (mobile && window.innerWidth <= mobile.breakpoint) {
-      const { breakpoint, infinity, dotsAreVisibles, itemsToShow } = mobile;
+      const {
+        itemsToShow
+      } = mobile;
       const showNumOfItems = items.length / itemsToShow;
       const convertToPercentage = showNumOfItems * 10
 

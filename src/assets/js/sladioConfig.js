@@ -1,3 +1,4 @@
+/* eslint-disable import/prefer-default-export */
 export const sladioConfig = {
   mode: "development",
 
@@ -52,3 +53,6 @@ export const sladioConfig = {
     },
   },
 };
+
+
+ 
