@@ -22,9 +22,11 @@
     overflow: auto;
     display: flex;
     height: 40vw;
-    max-height: 500px;
+    max-height: 50vh;
     scroll-snap-type: x mandatory;
+    -ms-scroll-snap-type: x mandatory;
     scroll-snap-points-y: repeat(100%);
+    -webkit-scroll-snap-points-y: repeat(100%);
     scroll-behavior: smooth;
     background: gray;
     -ms-overflow-style: none; /* IE and Edge */
@@ -42,7 +44,9 @@
     height: 100%;
     text-align: center;
     user-select: none;
-    scroll-snap-align: start;
+    -ms-user-select: none; /* IE and Edge */
+    -webkit-user-select: none;
+    scroll-snap-align: center;
     background-color: $color-claro;
 
     &:nth-child(even) {

@@ -1,7 +1,7 @@
 export const sladioConfig = {
   mode: "development",
 
-  slidersNames: ["slider"], // Nombre del slider, funciona para usar varios sliders en el mismo HTML
+  slidersNames: ["slider", "slider2"], // Nombre del slider, funciona para usar varios sliders en el mismo HTML
 
   navsButtons: {
     // Nombre de los botones de navegación, funciona para usar varios botones de navegación en el mismo HTML
@@ -32,23 +32,21 @@ export const sladioConfig = {
   // Configuración personalizada del slider
   customSettings: {
     slider1: {
+      active: true,
       desktop: {
         breakpoint: 991,
         infinity: true,
-        dotsAreVisibles: true,
         itemsToShow: 3,
-        itemsToScroll: 1,
+        dotsAreVisibles: true,
       },
       tablet: {
         breakpoint: 990,
         itemsToShow: 2,
-        itemsToScroll: 1,
         infinity: true,
       },
       mobile: {
         breakpoint: 730,
         itemsToShow: 1,
-        itemsToScroll: 1,
         infinity: true,
       },
     },

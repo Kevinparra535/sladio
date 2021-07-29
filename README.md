@@ -8,10 +8,13 @@ Slider customizable
 - Se crearon las propiedades en los objetos de configuración, esto por si algo falta
 - Se crearon los botones de navegación
 - Si hay un contenedor con un nombre erróneo o inexistente lo clona, crea uno nuevo y elimina el anterior
+- Se agregan el multi slide en el mismo HTML
 
 ## Bugs 👾
 
 - Hay un bug con los botones de navegación, al llegar al ultimo item si se presiona este retrocede
+- Bug cuando se hay dos sliders, no detecta la desactivación de los slides siguientes al primero
+
 
 ## Eliminado 😴
 
@@ -24,9 +27,16 @@ Slider customizable
 
 ## Progreso (Bitácoras) 🚀
 
+### (29/07/2021)
+- Se agregan el multi slide en el mismo HTML
+- Bug cuando se hay dos sliders, no detecta la desactivacion de los slides siguientes al primero
+
+
 ### (27/07/2021)
 
 - Se crearon las propiedades en los objetos de configuración, esto por si algo falta
+
+
 ### (27/07/2021)
 
 - Se crearon los botones de navegación
