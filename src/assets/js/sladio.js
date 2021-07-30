@@ -82,8 +82,8 @@ class Sladio {
     this.init();
   }
 
+  // Si recibe un objeto de configuración lo asignamos a nuestra variable y Verificamos si no hay un parámetro se lo asignamos
   createDefaultSettings() {
-    // Si recibe un objeto de configuración lo asignamos a nuestra variable y Verificamos si no hay un parámetro se lo asignamos
 
     // Agregamos el modo en el entorno
     if (!this._config.mode) {
@@ -206,7 +206,6 @@ class Sladio {
       const container = slider.querySelector('.sladio__container');
       const items = container.querySelectorAll('.sladio__items');
       const { active, desktop, tablet, mobile } = this._config.customSettings[slider.getAttribute('id')];
-      const { type, } = this._config.pagination[slider.getAttribute('id')];
 
       if (active) {
         // Detecta el numero de items por slide y verifica el tamaño de la ventana
@@ -227,16 +226,6 @@ class Sladio {
             this.nextSlide(slider, container);
           }
 
-          // Si en la configuracion esta activado el modo fraccion, se cambia
-          if (type === 'fraction') {
-            const fraction = slider.querySelector('.sladio__indicator p');
-
-            if (this.index <= items.length) {
-              fraction.innerHTML = items[this.index].getAttribute('data-index');
-            }
-          }
-
-
         } else {
           if (this.index > 0) {
             console.log('Prev');
@@ -245,13 +234,6 @@ class Sladio {
 
           if (this.index < 0) {
             this.index = 0;
-          }
-
-          // Si en la configuración esta activado el modo fracción, se cambia
-          if (type === 'fraction') {
-            const fraction = slider.querySelector('.sladio__indicator p');
-
-            fraction.innerHTML = items[this.index].getAttribute('data-index');
           }
 
           this.prevSlide(slider, container);
@@ -269,7 +251,7 @@ class Sladio {
     const sliders = document.querySelectorAll('.sladio');
 
     sliders.forEach((slider) => {
-      const { navsButtons, pagination } = this._config;
+      const { navsButtons } = this._config;
       const container = slider.querySelector('.sladio__container');
 
       // Si el contenedor no existe, creamos uno
@@ -298,8 +280,6 @@ class Sladio {
       // Esto para que verifique si los contenedores exiten
       setTimeout(() => this.createDefaultSlider(), 1000);
 
-      // Leemos los valores de la configuración y empezamos a crear y mostrar elementos necesarios
-
       // Si los navs están activos
       if (navsButtons) {
         const { navsActive } = navsButtons[slider.getAttribute('id')];
@@ -310,13 +290,14 @@ class Sladio {
       }
 
       // Si la paginacion esta activa, hacemos el llamado a nuestro metodo
-      if (pagination) {
-        const { pagActive } = pagination[slider.getAttribute('id')];
+      // if (pagination) {
+      //   const { pagActive } = pagination[slider.getAttribute('id')];
 
-        if (pagActive) {
-          this.createIndicators(pagination)
-        }
-      }
+
+      //   if (pagActive) {
+      //     this.createIndicators(pagination)
+      //   }
+      // }
 
     });
   }
@@ -340,14 +321,8 @@ class Sladio {
       prevButton.appendChild(textPrev);
       nextButton.appendChild(textNext);
 
-      prevButton.addEventListener(
-        'click',
-        (e) => (e.preventDefault(), this.prevSlide(slider, container))
-      );
-      nextButton.addEventListener(
-        'click',
-        (e) => (e.preventDefault(), this.nextSlide(slider, container))
-      );
+      prevButton.addEventListener('click', (e) => (e.preventDefault(), this.prevSlide(slider, container)));
+      nextButton.addEventListener('click', (e) => (e.preventDefault(), this.nextSlide(slider, container)));
 
       if (position === 'top' || position === 'left' || position === 'right') {
         this.report('No hay una diseño preestablecido para esta posición 😥');
@@ -390,10 +365,14 @@ class Sladio {
     });
   }
 
+  // Crea los bullets o indicadores de posición
+  // createIndicators() { console.log('Indicadores') }
+
   // Muestra el siguiente item
   nextSlide(slider, container) {
     this.slider = slider;
     this.container = container;
+
     container.scrollLeft += slider.scrollWidth; // Muestra el siguiente item
   }
 
@@ -402,51 +381,6 @@ class Sladio {
     this.slider = slider;
     this.container = container;
     container.scrollLeft -= slider.scrollWidth; // Muestra el anterior item
-  }
-
-  // Crea los bullets o indicadores de posición
-  createIndicators(pagination) {
-    this.pagination = pagination;
-    const sliders = document.querySelectorAll('.sladio');
-
-    //  Tramemos los o el slider
-    sliders.forEach((slider) => {
-      const container = slider.querySelector('.sladio__container');
-      const items = container.querySelectorAll('.sladio__items');
-      const { type, } = pagination[slider.getAttribute('id')];
-
-      // Creamos el contenedor del los indicadores, este se inyecta directamente en el slider
-      const indicator = document.createElement('div');
-      indicator.className = 'sladio__indicator';// Le asignamos la clase
-
-      // if (pagination.type === 'bullets') {}
-
-      // Si en la configuración es Fracción entonces
-      if (type === 'fraction') {
-
-        // Creamos un elemento P, ese contendrá los numeros de la fracción
-        const fraction = document.createElement('p');
-
-        // Lo insertamos en el contenedor
-        indicator.append(fraction)
-
-        // a cada item le añadimos un atributo, este nos dira en que posicion esta
-        for (let i = 0; i < items.length; i++) {
-          items[i].setAttribute('data-index', `${i}/${items.length - 1}`);
-        }
-
-        // Hacemos el llamado inicial para que se muestre en el slider
-        fraction.innerHTML = items[this.index].getAttribute('data-index');
-
-      }
-
-      // if (pagination.type === 'progressbar') { }
-      // if (pagination.type === 'scrollbar') { }
-
-      // Insertamos el contenedor en el slider
-      slider.append(indicator)
-
-    });
   }
 
   // Detecta el numero de items por slide y verifica el tamaño de la ventana

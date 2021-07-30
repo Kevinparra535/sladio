@@ -4,7 +4,7 @@
 
 .sladio {
   position: relative;
-  background-color: gray;
+  background-color: get-opacity($color-oscuro, .1);
   @include font-size($p);
 
   &::after {

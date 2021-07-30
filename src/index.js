@@ -3,7 +3,6 @@
 /* eslint-disable no-console */
 /* eslint-disable no-unused-vars */
 
-// import Sladio  from './assets/js/sladio';
 import Sladio from './assets/js/sladio.js';
 import { sladioConfig } from './assets/js/sladioConfig.js';
 
