@@ -15,10 +15,12 @@ export const sladioConfig = {
   },
 
   pagination: {
-    pagActive: false,
-    type: "bullets", // bullets, fraction, progressbar, scrollbar,
-    interactive: false,
-    dynamicBullets: false,
+    slider1: {
+      pagActive: true,
+      type: "fraction", // bullets, fraction, progressbar, scrollbar,
+      interactive: false,
+      dynamicBullets: false,
+    }
   },
 
   autoSlide: {
@@ -37,12 +39,12 @@ export const sladioConfig = {
       desktop: {
         breakpoint: 991,
         infinity: true,
-        itemsToShow: 3,
+        itemsToShow: 1,
         dotsAreVisibles: true,
       },
       tablet: {
         breakpoint: 990,
-        itemsToShow: 2,
+        itemsToShow: 1,
         infinity: true,
       },
       mobile: {
@@ -55,4 +57,3 @@ export const sladioConfig = {
 };
 
 
- 

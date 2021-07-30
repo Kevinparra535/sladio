@@ -25,6 +25,9 @@ Paquetes 📦
 
 Progreso (Bitácoras) 🚀
 
+(30/07/2021)
+- Creamos los indicadores y el flujo de funcionamiento en modo fraccion, no se ha probado con dos o mas sliders
+
 (29/07/2021)
 - Se agregan el multi slide en el mismo HTML
 - Bug cuando se hay dos sliders, no detecta la desactivacion de los slides siguientes al primero
