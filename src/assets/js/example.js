@@ -1,6 +1,6 @@
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", () => {
   const carousels = document.querySelectorAll(".carousel");
-  carousels.forEach(function (carousel) {
+  carousels.forEach((carousel) => {
     const ele = carousel.querySelector("ul");
     const bullets = carousel.querySelectorAll("ol li");
     const nextarrow = carousel.querySelector(".next");
@@ -8,18 +8,18 @@ document.addEventListener("DOMContentLoaded", function () {
     bullets[0].classList.add("selected");
 
     const setSelected = function () {
-      bullets.forEach(function (bullet) {
+      bullets.forEach((bullet) => {
         bullet.classList.remove("selected");
       });
-      let nthchild = Math.round(ele.scrollLeft / carousel.scrollWidth) + 1;
-      carousel.querySelector("ol li:nth-child(" + nthchild + ")").classList.add("selected");
+      const nthchild = Math.round(ele.scrollLeft / carousel.scrollWidth) + 1;
+      carousel.querySelector(`ol li:nth-child(${  nthchild  })`).classList.add("selected");
     };
 
     const nextSlide = function () {
       if (!carousel.querySelector("ol li:last-child").classList.contains("selected")) {
 
         carousel.querySelector("ol li.selected").nextElementSibling.querySelector("a").click();
-        ele.scrollLeft = ele.scrollLeft + carousel.scrollWidth;
+        ele.scrollLeft += carousel.scrollWidth;
 
       } else {
         carousel.querySelector("ol li:first-child a").click();
@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", function () {
           .querySelector("ol li.selected")
           .previousElementSibling.querySelector("a")
           .click();
-        ele.scrollLeft = ele.scrollLeft - carousel.scrollWidth;
+        ele.scrollLeft -= carousel.scrollWidth;
       } else {
         carousel.querySelector("ol li:last-child a").click();
         ele.scrollLeft = ele.scrollWidth - carousel.scrollWidth;
@@ -49,15 +49,15 @@ document.addEventListener("DOMContentLoaded", function () {
     nextarrow.addEventListener("click", nextSlide);
     prevarrow.addEventListener("click", prevSlide);
 
-    //setInterval for autoplay
+    // setInterval for autoplay
     if (carousel.getAttribute("duration")) {
-      setInterval(function () {
+      setInterval(() => {
         if (ele != document.querySelector(".carousel:hover ul")) {
           if (ele.scrollWidth > ele.scrollLeft + carousel.scrollWidth) {
-            ele.scrollLeft = ele.scrollLeft + carousel.scrollWidth;
+            ele.scrollLeft += carousel.scrollWidth;
           } else ele.scrollLeft = 0;
         }
       }, carousel.getAttribute("duration"));
     }
-  }); //end foreach
-}); //end onload
+  }); // end foreach
+}); // end onload

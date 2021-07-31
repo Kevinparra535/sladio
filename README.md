@@ -4,14 +4,16 @@ Slider customizable
 
 ## New Fetures 🤩
 
-- Se crearon las propiedades en los objetos de configuración, esto por si algo falta
+- Creamos los indicadores
+- Se implemento el progressbar (Funcionando)
+- Se implemento parcialmente los faccionarios (Test)
+- Se agregan el multi slide en el mismo HTML
 - Se crearon los botones de navegación
 - Si hay un contenedor con un nombre erróneo o inexistente lo clona, crea uno nuevo y elimina el anterior
-- Se agregan el multi slide en el mismo HTML
 
 ## Bugs 👾
 
-- Hay un bug con los botones de navegación, al llegar al ultimo item si se presiona este retrocede
+- Hay un bug con los botones de navegación, al llegar al ultimo item si se presiona este retrocede (corregido) - (31/07/2021)
 - Bug cuando se hay dos sliders, no detecta la desactivación de los slides siguientes al primero
 
 
@@ -27,6 +29,11 @@ Slider customizable
 
 
 ## Progreso (Bitácoras) 🚀
+
+### (30/07/2021)
+- Creamos los indicadores y el flujo de funcionamiento en modo fraccion, no se ha probado con dos o mas sliders
+- Eliminamos los indicadores por muchos bugs
+
 
 ### (30/07/2021)
 - Creamos los indicadores y el flujo de funcionamiento en modo fraccion, no se ha probado con dos o mas sliders

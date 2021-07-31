@@ -1,3 +1,7 @@
+/* eslint-disable no-restricted-syntax */
+/* eslint-disable no-const-assign */
+/* eslint-disable no-undef */
+/* eslint-disable class-methods-use-this */
 /* eslint-disable no-multi-assign */
 /* eslint-disable no-return-assign */
 /* eslint-disable no-sequences */
@@ -20,7 +24,7 @@ class Sladio {
     this.customSlider = this.customSlider.bind(this);
     this.createNavsButtons = this.createNavsButtons.bind(this);
     this.createDefaultSettings = this.createDefaultSettings.bind(this);
-    // this.createIndicators = this.createIndicators.bind(this);
+    this.createIndicators = this.createIndicators.bind(this);
 
     if (!Object.keys(this._config).length) {
       // Si no recibe un objeto con la configuración, creamos una configuración global
@@ -173,19 +177,13 @@ class Sladio {
 
       this.firtsSlider = firtsSlider;
 
-      const defaultStyles = document
-        .querySelector(`#${this.firtsSlider}`)
-        .getAttribute('data-style');
+      const defaultStyles = document.querySelector(`#${this.firtsSlider}`).getAttribute('data-style');
 
       if (defaultStyles === 'default') {
         this.createDefaultSlider();
       }
 
-      if (
-        defaultStyles === 'custom' ||
-        !defaultStyles ||
-        defaultStyles === null
-      ) {
+      if (defaultStyles === 'custom' || !defaultStyles || defaultStyles === null) {
         // Esta es la configuración global, aquí funciona todo
         this.customSlider();
       }
@@ -196,53 +194,6 @@ class Sladio {
       this.firstSlider = [...initialSlider];
       this.customSlider();
     }
-  }
-
-  // Creamos el sistema por default del slider
-  createDefaultSlider() {
-    const sliders = document.querySelectorAll('.sladio');
-
-    sliders.forEach((slider) => {
-      const container = slider.querySelector('.sladio__container');
-      const items = container.querySelectorAll('.sladio__items');
-      const { active, desktop, tablet, mobile } = this._config.customSettings[slider.getAttribute('id')];
-
-      if (active) {
-        // Detecta el numero de items por slide y verifica el tamaño de la ventana
-        this.responsiveSlides(items, desktop, tablet, mobile);
-      }
-
-      const changeSlide = (e) => {
-        e.preventDefault();
-
-
-        this.dragEnd = e.clientX;
-
-        if (this.dragEnd < this.dragStart) {
-          if (this.index < items.length - 1) {
-            console.log('Next');
-
-            this.index++;
-            this.nextSlide(slider, container);
-          }
-
-        } else {
-          if (this.index > 0) {
-            console.log('Prev');
-            this.index--;
-          }
-
-          if (this.index < 0) {
-            this.index = 0;
-          }
-
-          this.prevSlide(slider, container);
-        }
-      };
-
-      container.addEventListener('mousedown', (e) => (e.preventDefault(), (this.dragStart = e.clientX)));
-      container.addEventListener('mouseup', changeSlide, true);
-    });
   }
 
   // Sistema custom
@@ -278,16 +229,17 @@ class Sladio {
 
       // Activamos los movimientos básicos del slider, un segundo despues
       // Esto para que verifique si los contenedores exiten
-      setTimeout(() => this.createDefaultSlider(), 1000);
+      setTimeout(() => this.createDefaultSlider(slider), 1000);
 
       // Si los navs están activos
       if (navsButtons) {
         const { navsActive } = navsButtons[slider.getAttribute('id')];
 
         if (navsActive) {
-          this.createNavsButtons(navsButtons);
+          this.createNavsButtons(slider, navsButtons);
         }
       }
+
 
       // Si la paginacion esta activa, hacemos el llamado a nuestro metodo
       // if (pagination) {
@@ -302,78 +254,187 @@ class Sladio {
     });
   }
 
+  // Creamos el sistema por default del slider
+  createDefaultSlider(slider) {
+    const container = slider.querySelector('.sladio__container');
+    const items = container.querySelectorAll('.sladio__items');
+    const { active, desktop, tablet, mobile } = this._config.customSettings[slider.getAttribute('id')];
+
+    if (active) {
+      // Detecta el numero de items por slide y verifica el tamaño de la ventana
+      this.responsiveSlides(items, desktop, tablet, mobile);
+    }
+
+    const changeSlide = (e) => {
+      e.preventDefault();
+
+
+      this.dragEnd = e.clientX;
+
+      if (this.dragEnd < this.dragStart) {
+        if (this.index < items.length - 1) {
+          console.log('Next');
+
+          this.index++;
+          this.nextSlide(slider, container, items);
+        }
+
+      } else {
+        if (this.index > 0) {
+          console.log('Prev');
+          this.index--;
+        }
+
+        if (this.index < 0) {
+          this.index = 0;
+        }
+
+        this.prevSlide(slider, container, items);
+      }
+    };
+
+    container.addEventListener('mousedown', (e) => (e.preventDefault(), (this.dragStart = e.clientX)));
+    container.addEventListener('mouseup', changeSlide, true);
+
+    // Iniciamos el creador de indicadores
+    this.createIndicators(slider);
+  }
+
   // Crea los botones de navegación
-  createNavsButtons(navsButtons) {
-    console.log('Navs Activos');
-    const sliders = document.querySelectorAll('.sladio');
+  createNavsButtons(slider, navsButtons) {
+    const container = slider.querySelector('.sladio__container');
+    const items = slider.querySelectorAll('.sladio__items');
 
-    sliders.forEach((slider) => {
-      const prevButton = document.createElement('button');
-      const nextButton = document.createElement('button');
-      const textPrev = document.createTextNode('Back');
-      const textNext = document.createTextNode('Next');
-      const container = slider.querySelector('.sladio__container');
-      const { btnPrev, btnNext, position } = navsButtons[slider.getAttribute('id')];
+    const { btnPrev, btnNext, position } = navsButtons[slider.getAttribute('id')];
 
-      prevButton.className = btnPrev;
-      nextButton.className = btnNext;
+    const prevButton = document.createElement('button');
+    const nextButton = document.createElement('button');
 
-      prevButton.appendChild(textPrev);
-      nextButton.appendChild(textNext);
+    const textPrev = document.createTextNode('Back');
+    const textNext = document.createTextNode('Next');
 
-      prevButton.addEventListener('click', (e) => (e.preventDefault(), this.prevSlide(slider, container)));
-      nextButton.addEventListener('click', (e) => (e.preventDefault(), this.nextSlide(slider, container)));
+    prevButton.className = btnPrev;
+    nextButton.className = btnNext;
 
-      if (position === 'top' || position === 'left' || position === 'right') {
-        this.report('No hay una diseño preestablecido para esta posición 😥');
-      }
+    prevButton.appendChild(textPrev);
+    nextButton.appendChild(textNext);
 
-      if (position === 'center' || position === '') {
-        prevButton.style.position = 'absolute';
-        prevButton.style.top = '50%';
-        prevButton.style.left = '10px';
-        prevButton.style.padding = '5px';
-        prevButton.style.cursor = 'pointer';
-        prevButton.style.width = 'auto';
+    prevButton.addEventListener('click', (e) => (e.preventDefault(), this.prevSlide(slider, container, items)));
+    nextButton.addEventListener('click', (e) => (e.preventDefault(), this.nextSlide(slider, container, items)));
 
-        nextButton.style.position = 'absolute';
-        nextButton.style.top = '50%';
-        nextButton.style.right = '10px';
-        nextButton.style.padding = '5px';
-        nextButton.style.cursor = 'pointer';
-        nextButton.style.width = 'auto';
-      }
+    if (position === 'top' || position === 'left' || position === 'right') {
+      this.report('No hay una diseño preestablecido para esta posición 😥');
+    }
 
-      if (position === 'bottom') {
-        prevButton.style.position = 'absolute';
-        prevButton.style.bottom = '0px';
-        prevButton.style.left = '0px';
-        prevButton.style.padding = '5px';
-        prevButton.style.cursor = 'pointer';
-        prevButton.style.width = '50%';
+    if (position === 'center' || position === '') {
+      prevButton.style.position = 'absolute';
+      prevButton.style.top = '50%';
+      prevButton.style.left = '10px';
+      prevButton.style.padding = '5px';
+      prevButton.style.cursor = 'pointer';
+      prevButton.style.width = 'auto';
 
-        nextButton.style.position = 'absolute';
-        nextButton.style.bottom = '0px';
-        nextButton.style.right = '0px';
-        nextButton.style.padding = '5px';
-        nextButton.style.cursor = 'pointer';
-        nextButton.style.width = '50%';
-      }
+      nextButton.style.position = 'absolute';
+      nextButton.style.top = '50%';
+      nextButton.style.right = '10px';
+      nextButton.style.padding = '5px';
+      nextButton.style.cursor = 'pointer';
+      nextButton.style.width = 'auto';
+    }
 
-      container.appendChild(prevButton);
-      container.appendChild(nextButton);
-    });
+    if (position === 'bottom') {
+      prevButton.style.position = 'absolute';
+      prevButton.style.bottom = '0px';
+      prevButton.style.left = '0px';
+      prevButton.style.padding = '5px';
+      prevButton.style.cursor = 'pointer';
+      prevButton.style.width = '50%';
+
+      nextButton.style.position = 'absolute';
+      nextButton.style.bottom = '0px';
+      nextButton.style.right = '0px';
+      nextButton.style.padding = '5px';
+      nextButton.style.cursor = 'pointer';
+      nextButton.style.width = '50%';
+    }
+
+    if (!slider.querySelector(`.${btnPrev}`) && !slider.querySelector(`.${btnNext}`)) {
+      slider.appendChild(prevButton);
+      slider.appendChild(nextButton);
+    }
+
   }
 
   // Crea los bullets o indicadores de posición
-  // createIndicators() { console.log('Indicadores') }
+  createIndicators(slider) {
+    const container = slider.querySelector('.sladio__container');
+    const items = container.querySelectorAll('.sladio__items');
+
+    // Barra de progreso
+
+    // Creamos el contenedor y la barra de progreso
+    const progressBar = document.createElement('div');
+    const bar = document.createElement('div');
+
+    progressBar.className = 'sladio__progressbar';
+    bar.className = 'sladio__progressbar-bar';
+    bar.setAttribute('id', 'progressBar')
+
+    progressBar.appendChild(bar);
+
+    // Si el elemento no está agregalo
+    if (!slider.querySelector('.sladio__progressbar')) {
+      slider.insertBefore(progressBar, container);
+    }
+
+    // Cuando se hace scroll la función añade el porcentaje al indicador
+    const updateProgressBar = (e) => {
+      e.preventDefault()
+
+      // Si el contenedor existe, encontes hace el proceso
+      if (slider.querySelector('.sladio__progressbar')) {
+        const scrolled = container.scrollLeft / (container.scrollWidth - container.clientWidth) * 100;
+        slider.querySelector("#progressBar").style.width = `${scrolled}%`;
+        slider.querySelector("#progressBar").style.maxWidth = `100%`;
+      }
+    }
+
+    // Escuchamos el evento scroll
+    container.addEventListener('scroll', updateProgressBar, true);
+
+    // Fracciones
+
+    // Creamos el contenedor donde se van a mostrar el texto
+    const fractions = document.createElement('div');
+    const fractionContainer = document.createElement('p');
+    const fractionText = document.createTextNode(`0 / ${items.length - 1}`);
+
+    fractions.className = 'sladio__indicator';
+    fractionContainer.appendChild(fractionText);
+
+    // Asigamos el texto a los items
+    for (let i = 0; i < items.length; i++) {
+      items[i].setAttribute('data-index', (`${i} / ${items.length - 1}`));
+    }
+
+    fractions.append(fractionContainer)
+
+    // Si el contenedor no existe, agregalo
+    if (!slider.querySelector('.sladio__indicator')) {
+      slider.append(fractions)
+    }
+
+  }
 
   // Muestra el siguiente item
-  nextSlide(slider, container) {
+  nextSlide(slider, container, items) {
     this.slider = slider;
     this.container = container;
+    this.items = items;
 
-    container.scrollLeft += slider.scrollWidth; // Muestra el siguiente item
+    if (container.scrollLeft / items.length - 2 !== slider.scrollWidth) {
+      container.scrollLeft += slider.scrollWidth; // Muestra el siguiente item
+    }
   }
 
   // Muestra el anterior item
@@ -389,27 +450,29 @@ class Sladio {
     this.desktop = desktop;
     this.tablet = tablet;
     this.mobile = mobile;
+
+
     if (desktop && window.innerWidth >= desktop.breakpoint) {
       const { itemsToShow } = desktop;
       const showNumOfItems = items.length / itemsToShow;
       const convertToPercentage = showNumOfItems * 10;
 
-      for (let i = 0; i < items.length; i++) {
-        items[i].style.minWidth = `${convertToPercentage.toFixed(2)}%`;
+      if (itemsToShow !== 1) {
+        for (let i = 0; i < items.length; i++) {
+          items[i].style.minWidth = `${convertToPercentage.toFixed(2)}%`;
+        }
       }
     }
 
-    if (
-      tablet &&
-      window.innerWidth <= tablet.breakpoint &&
-      window.innerWidth >= mobile.breakpoint
-    ) {
+    if (tablet && window.innerWidth <= tablet.breakpoint && window.innerWidth >= mobile.breakpoint) {
       const { itemsToShow } = tablet;
       const showNumOfItems = items.length / itemsToShow;
       const convertToPercentage = showNumOfItems * 10;
 
-      for (let i = 0; i < items.length; i++) {
-        items[i].style.minWidth = `${convertToPercentage.toFixed(2)}%`;
+      if (itemsToShow !== 1) {
+        for (let i = 0; i < items.length; i++) {
+          items[i].style.minWidth = `${convertToPercentage.toFixed(2)}%`;
+        }
       }
     }
 
@@ -418,8 +481,10 @@ class Sladio {
       const showNumOfItems = items.length / itemsToShow;
       const convertToPercentage = showNumOfItems * 10;
 
-      for (let i = 0; i < items.length; i++) {
-        items[i].style.minWidth = `${convertToPercentage.toFixed(2)}%`;
+      if (itemsToShow !== 1) {
+        for (let i = 0; i < items.length; i++) {
+          items[i].style.minWidth = `${convertToPercentage.toFixed(2)}%`;
+        }
       }
     }
   }
