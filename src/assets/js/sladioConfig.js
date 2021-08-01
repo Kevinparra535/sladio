@@ -52,12 +52,12 @@ export const sladioConfig = {
       desktop: {
         breakpoint: 991,
         infinity: true,
-        itemsToShow: 1,
+        itemsToShow: 2,
         dotsAreVisibles: true,
       },
       tablet: {
         breakpoint: 990,
-        itemsToShow: 1,
+        itemsToShow: 3,
         infinity: true,
       },
       mobile: {
@@ -77,7 +77,7 @@ export const sladioConfig = {
       },
       tablet: {
         breakpoint: 990,
-        itemsToShow: 1,
+        itemsToShow: 2,
         infinity: true,
       },
       mobile: {

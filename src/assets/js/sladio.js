@@ -262,7 +262,7 @@ class Sladio {
 
     if (active) {
       // Detecta el numero de items por slide y verifica el tamaño de la ventana
-      this.responsiveSlides(items, desktop, tablet, mobile);
+      this.responsiveSlides(items, desktop, tablet, mobile, container);
     }
 
     const changeSlide = (e) => {
@@ -272,25 +272,26 @@ class Sladio {
       this.dragEnd = e.clientX;
 
       if (this.dragEnd < this.dragStart) {
-        if (this.index < items.length - 1) {
-          console.log('Next');
+        // if (this.index < items.length - 1) {
+        //   console.log('Next');
+        //   this.index++;
+        // }
 
-          this.index++;
-          this.nextSlide(slider, container, items);
-        }
+        this.nextSlide(slider, container, items);
 
       } else {
-        if (this.index > 0) {
-          console.log('Prev');
-          this.index--;
-        }
+        // if (this.index > 0) {
+        //   console.log('Prev');
+        //   this.index--;
+        // }
 
-        if (this.index < 0) {
-          this.index = 0;
-        }
+        // if (this.index < 0) {
+        //   this.index = 0;
+        // }
 
         this.prevSlide(slider, container, items);
       }
+
     };
 
     container.addEventListener('mousedown', (e) => (e.preventDefault(), (this.dragStart = e.clientX)));
@@ -419,10 +420,22 @@ class Sladio {
 
     fractions.append(fractionContainer)
 
+
     // Si el contenedor no existe, agregalo
     if (!slider.querySelector('.sladio__indicator')) {
       slider.append(fractions)
     }
+
+    // Mostramos los indicadores por fracciones
+    const updateFractions = (e) => {
+      e.preventDefault()
+    }
+
+    // Cada vez que el slider hace scroll, actualizamos los indicadores
+    container.addEventListener('scroll', updateFractions, true)
+
+
+    // Bullets
 
   }
 
@@ -432,9 +445,10 @@ class Sladio {
     this.container = container;
     this.items = items;
 
-    if (container.scrollLeft / items.length - 2 !== slider.scrollWidth) {
-      container.scrollLeft += slider.scrollWidth; // Muestra el siguiente item
-    }
+    // if (container.scrollLeft / items.length - 2 !== slider.scrollWidth) {
+    // }
+
+    container.scrollLeft += slider.scrollWidth; // Muestra el siguiente item
   }
 
   // Muestra el anterior item
@@ -445,47 +459,66 @@ class Sladio {
   }
 
   // Detecta el numero de items por slide y verifica el tamaño de la ventana
-  responsiveSlides(items, desktop, tablet, mobile) {
+  responsiveSlides(items, desktop, tablet, mobile, container) {
     this.items = items;
     this.desktop = desktop;
     this.tablet = tablet;
     this.mobile = mobile;
+    this.container = container;
 
-
+    // Si el tamaño de la ventana corresponde con el tamaño en la configuración, sucede esto
     if (desktop && window.innerWidth >= desktop.breakpoint) {
       const { itemsToShow } = desktop;
-      const showNumOfItems = items.length / itemsToShow;
-      const convertToPercentage = showNumOfItems * 10;
+      // const showNumOfItems = (items.length / itemsToShow) * 10;
+      const showNumOfItems = (100 / itemsToShow);
+      const convertToPercentage = showNumOfItems;
 
-      if (itemsToShow !== 1) {
-        for (let i = 0; i < items.length; i++) {
-          items[i].style.minWidth = `${convertToPercentage.toFixed(2)}%`;
-        }
+      for (let i = 0; i < items.length; i++) {
+        items[i].style.minWidth = `${convertToPercentage.toFixed(2)}%`;
       }
+
+
+      // if (itemsToShow !== 1) {
+      //   for (let i = 0; i < items.length; i++) {
+      //     items[i].style.minWidth = `${convertToPercentage.toFixed(2)}%`;
+      //   }
+      // }
     }
 
     if (tablet && window.innerWidth <= tablet.breakpoint && window.innerWidth >= mobile.breakpoint) {
       const { itemsToShow } = tablet;
-      const showNumOfItems = items.length / itemsToShow;
-      const convertToPercentage = showNumOfItems * 10;
+      // const showNumOfItems = items.length / itemsToShow;
+      const showNumOfItems = (100 / itemsToShow);
+      const convertToPercentage = showNumOfItems;
 
-      if (itemsToShow !== 1) {
-        for (let i = 0; i < items.length; i++) {
-          items[i].style.minWidth = `${convertToPercentage.toFixed(2)}%`;
-        }
+      for (let i = 0; i < items.length; i++) {
+        items[i].style.minWidth = `${convertToPercentage.toFixed(2)}%`;
       }
+
+
+      // if (itemsToShow !== 1) {
+      //   for (let i = 0; i < items.length; i++) {
+      //     items[i].style.minWidth = `${convertToPercentage.toFixed(2)}%`;
+      //   }
+      // }
     }
 
     if (mobile && window.innerWidth <= mobile.breakpoint) {
       const { itemsToShow } = mobile;
-      const showNumOfItems = items.length / itemsToShow;
-      const convertToPercentage = showNumOfItems * 10;
+      // const showNumOfItems = items.length / itemsToShow;
+      const showNumOfItems = (100 / itemsToShow);
 
-      if (itemsToShow !== 1) {
-        for (let i = 0; i < items.length; i++) {
-          items[i].style.minWidth = `${convertToPercentage.toFixed(2)}%`;
-        }
+      const convertToPercentage = showNumOfItems;
+
+      for (let i = 0; i < items.length; i++) {
+        items[i].style.minWidth = `${convertToPercentage.toFixed(2)}%`;
       }
+
+      // if (itemsToShow !== 1) {
+      //   for (let i = 0; i < items.length; i++) {
+      //     items[i].style.minWidth = `${convertToPercentage.toFixed(2)}%`;
+      //   }
+      // }
     }
   }
 

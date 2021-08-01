@@ -29,6 +29,11 @@ Paquetes 📦
 Progreso (Bitácoras) 🚀
 
 (31/07/2021)
+- Ajustamos el responsive y para que se aplique correctamente
+- Se implemento parcialmente los faccionarios (Test)
+
+
+(31/07/2021)
 - Creamos los indicadores
 - Se implemento el progressbar (Funcionando)
 - Se implemento parcialmente los faccionarios (Test)
