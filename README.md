@@ -30,6 +30,10 @@ Slider customizable
 
 ## Progreso (Bitácoras) 🚀
 
+### (31/07/2021)
+- Ajustamos el responsive y para que se aplique correctamente
+- Se implemento parcialmente los faccionarios (Test)
+
 ### (30/07/2021)
 - Creamos los indicadores y el flujo de funcionamiento en modo fraccion, no se ha probado con dos o mas sliders
 - Eliminamos los indicadores por muchos bugs

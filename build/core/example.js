@@ -1,42 +1,36 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const carousels = document.querySelectorAll(".carousel");
-  carousels.forEach((carousel) => {
-    const ele = carousel.querySelector("ul");
-    const bullets = carousel.querySelectorAll("ol li");
-    const nextarrow = carousel.querySelector(".next");
-    const prevarrow = carousel.querySelector(".prev");
+"use strict";
+
+document.addEventListener("DOMContentLoaded", function () {
+  var carousels = document.querySelectorAll(".carousel");
+  carousels.forEach(function (carousel) {
+    var ele = carousel.querySelector("ul");
+    var bullets = carousel.querySelectorAll("ol li");
+    var nextarrow = carousel.querySelector(".next");
+    var prevarrow = carousel.querySelector(".prev");
     bullets[0].classList.add("selected");
 
-    const setSelected = function () {
-      bullets.forEach((bullet) => {
+    var setSelected = function setSelected() {
+      bullets.forEach(function (bullet) {
         bullet.classList.remove("selected");
       });
-      const nthchild = Math.round(ele.scrollLeft / carousel.scrollWidth) + 1;
-      carousel.querySelector(`ol li:nth-child(${  nthchild  })`).classList.add("selected");
+      var nthchild = Math.round(ele.scrollLeft / carousel.scrollWidth) + 1;
+      carousel.querySelector("ol li:nth-child(" + nthchild + ")").classList.add("selected");
     };
 
-    const nextSlide = function () {
+    var nextSlide = function nextSlide() {
       if (!carousel.querySelector("ol li:last-child").classList.contains("selected")) {
 
         carousel.querySelector("ol li.selected").nextElementSibling.querySelector("a").click();
         ele.scrollLeft += carousel.scrollWidth;
-
       } else {
         carousel.querySelector("ol li:first-child a").click();
         ele.scrollLeft = 0;
       }
     };
 
-    const prevSlide = function () {
-      if (
-        !carousel
-          .querySelector("ol li:first-child")
-          .classList.contains("selected")
-      ) {
-        carousel
-          .querySelector("ol li.selected")
-          .previousElementSibling.querySelector("a")
-          .click();
+    var prevSlide = function prevSlide() {
+      if (!carousel.querySelector("ol li:first-child").classList.contains("selected")) {
+        carousel.querySelector("ol li.selected").previousElementSibling.querySelector("a").click();
         ele.scrollLeft -= carousel.scrollWidth;
       } else {
         carousel.querySelector("ol li:last-child a").click();
@@ -51,7 +45,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // setInterval for autoplay
     if (carousel.getAttribute("duration")) {
-      setInterval(() => {
+      setInterval(function () {
         if (ele != document.querySelector(".carousel:hover ul")) {
           if (ele.scrollWidth > ele.scrollLeft + carousel.scrollWidth) {
             ele.scrollLeft += carousel.scrollWidth;
