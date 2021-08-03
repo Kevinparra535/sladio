@@ -38,6 +38,10 @@ Slider customizable
 - Se acondicionó el modo infinito
 - Se acondicionó el modo infinito si las pagination está activa
 
+### (2/08/2021)
+- Cambiamos la estructura para publicar paquete en NPM
+- Se crearon dos archivos nuevos que contienen la configuración por defecto
+
 ### (31/07/2021)
 - Ajustamos el responsive y para que se aplique correctamente
 - Se implemento parcialmente los faccionarios (Test)
