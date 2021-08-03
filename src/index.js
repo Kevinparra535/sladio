@@ -9,8 +9,8 @@
 /* eslint-disable no-plusplus */
 /* eslint-disable no-param-reassign */
 
-import * as configDefault from './core/configDefault';
-import AutoCompleteSettings from './core/autoCompleteSettings';
+import * as configDefault from './core/utils/configDefault';
+import AutoCompleteSettings from './core/utils/autoCompleteSettings';
 
 class Sladio {
   constructor(config) {
@@ -82,6 +82,7 @@ class Sladio {
     sliders.forEach((slider) => {
       const { navsButtons } = this._config;
       const container = slider.querySelector('.sladio__container');
+      const defaultStyles = slider.getAttribute('data-style') || 'default'
 
       // Si el contenedor no existe, creamos uno
       if (!container) {
@@ -105,9 +106,11 @@ class Sladio {
         }
       }
 
-      // Activamos los movimientos básicos del slider, un segundo despues
+      // Activamos los movimientos básicos del slider, un segundo después
       // Esto para que verifique si los contenedores exiten
-      setTimeout(() => this.createDefaultSlider(slider), 1000);
+      if (defaultStyles === 'default' || defaultStyles === null) {
+        setTimeout(() => this.createDefaultSlider(slider, defaultStyles), 1000);
+      }
 
       // Si los navs están activos
       if (navsButtons) {
@@ -117,28 +120,23 @@ class Sladio {
           this.createNavsButtons(slider, navsButtons);
         }
       }
-
-
-      // Si la paginacion esta activa, hacemos el llamado a nuestro metodo
-      // if (pagination) {
-      //   const { pagActive } = pagination[slider.getAttribute('id')];
-
-
-      //   if (pagActive) {
-      //     this.createIndicators(pagination)
-      //   }
-      // }
-
     });
   }
 
   // Creamos el sistema por default del slider
-  createDefaultSlider(slider) {
+  createDefaultSlider(slider, defaultStyles) {
     const container = slider.querySelector('.sladio__container');
     const items = container.querySelectorAll('.sladio__items');
     const { active, desktop, tablet, mobile } = this._config.customSettings[slider.getAttribute('id')];
     const { pagActive } = this._config.pagination[slider.getAttribute('id')];
 
+    slider.setAttribute('data-style', defaultStyles)
+
+    container.classList.add('horizontal') // or vertical
+
+    for (let i = 0; i < items.length; i++) {
+      items[i].classList.add('sladio__items-start');
+    }
 
     if (active) {
       // Detecta el numero de items por slide y verifica el tamaño de la ventana
@@ -296,7 +294,7 @@ class Sladio {
   createIndicators(slider) {
     const container = slider.querySelector('.sladio__container');
     const items = container.querySelectorAll('.sladio__items');
-    const { pagActive, dynamicBullets, interactive, type } = this._config.pagination[slider.getAttribute('id')]
+    const { interactive, type } = this._config.pagination[slider.getAttribute('id')]
     const indicator = document.createElement('div');
 
 

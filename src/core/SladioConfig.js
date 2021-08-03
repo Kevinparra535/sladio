@@ -14,10 +14,10 @@ export const sladioConfig = {
     },
 
     slider2: {
-      navsActive: 'bottom',
+      navsActive: false,
       btnPrev: 'btn__prev', // Nombre de la clase que contiene el botón previo
       btnNext: 'btn__next', // Nombre de la clase que contiene el botón siguiente
-      position: 'center', // posición preestablecida de los botones de navegación
+      position: 'bottom', // posición preestablecida de los botones de navegación
     },
   },
 
@@ -57,7 +57,7 @@ export const sladioConfig = {
       },
       tablet: {
         breakpoint: 990,
-        itemsToShow: 3,
+        itemsToShow: 2,
         infinity: true,
       },
       mobile: {
