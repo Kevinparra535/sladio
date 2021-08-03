@@ -4,7 +4,6 @@
 
 .sladio {
   position: relative;
-  background-color: get-opacity($color-oscuro, 0.1);
   @include font-size($p);
 
   &::after {
@@ -42,7 +41,6 @@
     scroll-snap-points-y: repeat(100%);
     -webkit-scroll-snap-points-y: repeat(100%);
     scroll-behavior: smooth;
-    background: gray;
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
     &::-webkit-scrollbar {
@@ -61,7 +59,7 @@
     -ms-user-select: none; /* IE and Edge */
     -webkit-user-select: none;
     scroll-snap-align: start;
-    background-color: $color-claro;
+    background-color: get-opacity($color-primario, 0.2);
 
     &:nth-child(even) {
       color: $color-claro;
@@ -81,6 +79,31 @@
     p {
       width: 100%;
       background-color: $color-bg-claro;
+    }
+
+    &__bullets {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      .bullets {
+        padding: 5px;
+        margin: $space_half;
+        border-radius: 100%;
+        border: 2px solid $color-primario;
+        transition: .2s ease-in-out 0.1s;
+
+        &:hover {
+          background-color: get-opacity($color-primario, 0.2);
+        }
+      }
+
+      .bullet_selected {
+        background-color: $color-primario;
+        &:hover {
+          background-color: $color-primario;
+        }
+      }
     }
   }
 }

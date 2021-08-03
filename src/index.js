@@ -29,6 +29,9 @@ class Sladio {
     this.createNavsButtons = this.createNavsButtons.bind(this);
     this.createDefaultSettings = this.createDefaultSettings.bind(this);
     this.createIndicators = this.createIndicators.bind(this);
+    this.progressBarIndicator = this.progressBarIndicator.bind(this);
+    this.fractionIndicator = this.fractionIndicator.bind(this);
+
 
     if (!Object.keys(this._config).length) {
       // Si no recibe un objeto con la configuración, creamos una configuración global
@@ -134,11 +137,17 @@ class Sladio {
     const container = slider.querySelector('.sladio__container');
     const items = container.querySelectorAll('.sladio__items');
     const { active, desktop, tablet, mobile } = this._config.customSettings[slider.getAttribute('id')];
+    const { pagActive } = this._config.pagination[slider.getAttribute('id')];
 
 
     if (active) {
       // Detecta el numero de items por slide y verifica el tamaño de la ventana
       this.responsiveSlides(items, desktop, tablet, mobile, container);
+    }
+
+    if (pagActive) {
+      // Iniciamos el creador de indicadores
+      this.createIndicators(slider);
     }
 
     const changeSlide = (e) => {
@@ -172,9 +181,6 @@ class Sladio {
 
     container.addEventListener('mousedown', (e) => (e.preventDefault(), (this.dragStart = e.clientX)));
     container.addEventListener('mouseup', changeSlide, true);
-
-    // Iniciamos el creador de indicadores
-    this.createIndicators(slider);
   }
 
   // Crea los botones de navegación
@@ -242,12 +248,85 @@ class Sladio {
 
   }
 
+  // Muestra el siguiente item
+  nextSlide(slider, container, items) {
+    this.slider = slider;
+    this.container = container;
+    this.items = items;
+    const { pagActive } = this._config.pagination[slider.getAttribute('id')];
+
+    if (pagActive) {
+
+      // Modo infinito, esto detecta cuando el ultimo bullet este activo para iniciar el conteo de 0
+      if (!slider.querySelector('.sladio__indicator__bullets a:last-child').classList.contains('bullet_selected')) {
+        container.scrollLeft += slider.scrollWidth; // Muestra el siguiente item
+      } else {
+        slider.querySelector('.sladio__indicator__bullets a:first-child').click();
+        container.scrollLeft = 0
+      }
+    } else {
+
+      container.scrollLeft += slider.scrollWidth; // Muestra el siguiente item
+    }
+
+  }
+
+  // Muestra el anterior item
+  prevSlide(slider, container) {
+    this.slider = slider;
+    this.container = container;
+    const { pagActive } = this._config.pagination[slider.getAttribute('id')];
+
+    if (pagActive) {
+
+      // Modo infinito, esto detecta cuando el primer bullet este activo para iniciar el conteo desde el ultimo
+      if (!slider.querySelector('.sladio__indicator__bullets a:first-child').classList.contains('bullet_selected')) {
+        container.scrollLeft -= slider.scrollWidth; // Muestra el anterior item
+      } else {
+        slider.querySelector('.sladio__indicator__bullets a:last-child').click();
+        slider.scrollLeft = slider.scrollWidth - container.scrollWidth; // Muestra el anterior item
+      }
+
+    } else {
+      container.scrollLeft -= slider.scrollWidth; // Muestra el anterior item
+    }
+  }
+
   // Crea los bullets o indicadores de posición
   createIndicators(slider) {
     const container = slider.querySelector('.sladio__container');
     const items = container.querySelectorAll('.sladio__items');
+    const { pagActive, dynamicBullets, interactive, type } = this._config.pagination[slider.getAttribute('id')]
+    const indicator = document.createElement('div');
+
+
+    this.progressBarIndicator(slider, container)
+    this.fractionIndicator(slider, container, items, indicator)
+    this.bulletIndicator(slider, container, items, indicator, interactive)
 
     // Barra de progreso
+    // Si el tipo de indicador no es progressbar y los indicadores no estan activos, Ocultamos el contenedor
+    if (type !== 'progressbar') {
+      slider.querySelector('.sladio__progressbar').style.display = 'none'
+    }
+
+    // Fracciones
+    // Si el tipo de indicador no es fractions y los indicadores no estan activos, Ocultamos el contenedor
+    if (type !== 'fraction') {
+      slider.querySelector('.sladio__indicator p').style.display = 'none'
+    }
+
+    // Bullets
+    // Si el tipo de indicador no es progressbar y los indicadores no estan activos, Ocultamos el contenedor
+    if (type !== 'bullets') {
+      slider.querySelector('.sladio__indicator__bullets').style.display = 'none'
+    }
+  }
+
+  // Barra de progreso
+  progressBarIndicator(slider, container) {
+    this.slider = slider;
+    this.container = container;
 
     // Creamos el contenedor y la barra de progreso
     const progressBar = document.createElement('div');
@@ -278,15 +357,16 @@ class Sladio {
 
     // Escuchamos el evento scroll
     container.addEventListener('scroll', updateProgressBar, true);
+  }
 
-    // Fracciones
+  // Fracciones
+  fractionIndicator(slider, container, items, indicator) {
 
     // Creamos el contenedor donde se van a mostrar el texto
-    const fractions = document.createElement('div');
     const fractionContainer = document.createElement('p');
     const fractionText = document.createTextNode(`0 / ${items.length - 1}`);
 
-    fractions.className = 'sladio__indicator';
+    indicator.className = 'sladio__indicator';
     fractionContainer.appendChild(fractionText);
 
     // Asigamos el texto a los items
@@ -294,12 +374,12 @@ class Sladio {
       items[i].setAttribute('data-index', (`${i} / ${items.length - 1}`));
     }
 
-    fractions.append(fractionContainer)
+    indicator.append(fractionContainer)
 
 
     // Si el contenedor no existe, agregalo
     if (!slider.querySelector('.sladio__indicator')) {
-      slider.append(fractions)
+      slider.append(indicator)
     }
 
     // Mostramos los indicadores por fracciones
@@ -309,29 +389,56 @@ class Sladio {
 
     // Cada vez que el slider hace scroll, actualizamos los indicadores
     container.addEventListener('scroll', updateFractions, true)
-
-
-    // Bullets
-
   }
 
-  // Muestra el siguiente item
-  nextSlide(slider, container, items) {
-    this.slider = slider;
-    this.container = container;
-    this.items = items;
+  // Bullets
+  bulletIndicator(slider, container, items, indicator, interactive) {
+    const bulletsContainer = document.createElement('div')
+    const { itemsToShow } = this.desktop
 
-    // if (container.scrollLeft / items.length - 2 !== slider.scrollWidth) {
-    // }
+    bulletsContainer.className = 'sladio__indicator__bullets'
+    indicator.append(bulletsContainer)
 
-    container.scrollLeft += slider.scrollWidth; // Muestra el siguiente item
-  }
+    // Asigamos el id a los items
+    for (let i = 0; i < items.length; i++) {
+      items[i].setAttribute('id', `${i}`);
+    }
 
-  // Muestra el anterior item
-  prevSlide(slider, container) {
-    this.slider = slider;
-    this.container = container;
-    container.scrollLeft -= slider.scrollWidth; // Muestra el anterior item
+    // Creamos los bullets, e invocamos el id de cada item
+    for (let i = 0; i < items.length; i++) {
+      if (i % itemsToShow === 0)
+        bulletsContainer.innerHTML += `<a class="bullets" href="#${i}" data-index=${i}></a>`;
+    }
+
+    // Traemos todos los bullets del contenedor
+    const allBullets = slider.querySelectorAll('.bullets')
+    allBullets[0].classList.add('bullet_selected')
+
+    // Si interactive no esta activado, desactiva la función click
+    if (!interactive) {
+
+      for (let i = 0; i < allBullets.length; i++) {
+        allBullets[i].addEventListener('click', e => e.preventDefault());
+      }
+    }
+
+    // Esta función nos indicará cual elemento debe de mostrarse
+    const setSelected = () => {
+
+      // Removemos la clase active de los bullets
+      allBullets.forEach(bullet => {
+        bullet.classList.remove('bullet_selected')
+      })
+
+      // Escuchamos la posición del elemento
+      const nthChild = (Math.round(container.scrollLeft / slider.scrollWidth) + 1)
+
+      // Asignamos la clase dependiendo de la posición del scroll
+      slider.querySelector(`.sladio__indicator__bullets a:nth-child(${nthChild})`).classList.add('bullet_selected')
+    }
+
+    // Escuchamos el evento scroll del contenedor
+    container.addEventListener("scroll", setSelected);
   }
 
   // Detecta el numero de items por slide y verifica el tamaño de la ventana
@@ -406,6 +513,6 @@ class Sladio {
   }
 }
 
-// export default Sladio;
+export default Sladio;
 
-module.exports = Sladio;
+// module.exports = Sladio;

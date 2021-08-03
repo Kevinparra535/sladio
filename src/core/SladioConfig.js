@@ -24,13 +24,13 @@ export const sladioConfig = {
   pagination: {
     slider1: {
       pagActive: false,
-      type: 'fraction', // bullets, fraction, progressbar, scrollbar,
-      interactive: false,
+      type: 'bullets', // bullets, fraction, progressbar, scrollbar,
+      interactive: true,
       dynamicBullets: false,
     },
     slider2: {
       pagActive: false,
-      type: 'fraction', // bullets, fraction, progressbar, scrollbar,
+      type: 'progressbar', // bullets, fraction, progressbar, scrollbar,
       interactive: false,
       dynamicBullets: false,
     },
@@ -52,7 +52,7 @@ export const sladioConfig = {
       desktop: {
         breakpoint: 991,
         infinity: true,
-        itemsToShow: 2,
+        itemsToShow: 1,
         dotsAreVisibles: true,
       },
       tablet: {

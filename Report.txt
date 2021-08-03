@@ -1,6 +1,8 @@
 
 New Fetures 🤩
 
+- Agregamos los bullets y su interacción
+- Se acondicionó el modo infinito
 - Creamos los indicadores
 - Se implemento el progressbar (Funcionando)
 - Se implemento parcialmente los faccionarios (Test)
@@ -28,9 +30,16 @@ Paquetes 📦
 
 Progreso (Bitácoras) 🚀
 
+(3/08/2021)
+- Agregamos los bullets y su interacción
+- Creamos métodos independientes por organización
+- Se acondicionó el modo infinito
+- Se acondicionó el modo infinito si las pagination está activa
+
 (2/08/2021)
 - Cambiamos la estructura para publicar paquete en NPM
 - Se crearon dos archivos nuevos que contienen la configuración por defecto
+
 
 (31/07/2021)
 - Ajustamos el responsive y para que se aplique correctamente

@@ -27,9 +27,9 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var Sladio = function () {
-  function Sladio(config) {
-    _classCallCheck(this, Sladio);
+exports.sladio = function () {
+  function _class(config) {
+    _classCallCheck(this, _class);
 
     this._config = config;
     this.firtsSlider = null;
@@ -64,7 +64,7 @@ var Sladio = function () {
   // Si recibe un objeto de configuración lo asignamos a nuestra variable y Verificamos si no hay un parámetro se lo asignamos
 
 
-  _createClass(Sladio, [{
+  _createClass(_class, [{
     key: 'createDefaultSettings',
     value: function createDefaultSettings() {
 
@@ -469,9 +469,9 @@ var Sladio = function () {
     }
   }]);
 
-  return Sladio;
+  return _class;
 }();
 
 // export default Sladio;
 
-module.exports = Sladio;
+// module.exports = Sladio;

@@ -4,6 +4,8 @@ Slider customizable
 
 ## New Fetures 🤩
 
+- Agregamos los bullets y su interacción
+- Se acondicionó el modo infinito
 - Creamos los indicadores
 - Se implemento el progressbar (Funcionando)
 - Se implemento parcialmente los faccionarios (Test)
@@ -29,6 +31,12 @@ Slider customizable
 
 
 ## Progreso (Bitácoras) 🚀
+
+### (3/08/2021)
+- Agregamos los bullets y su interacción
+- Creamos métodos independientes por organización
+- Se acondicionó el modo infinito
+- Se acondicionó el modo infinito si las pagination está activa
 
 ### (31/07/2021)
 - Ajustamos el responsive y para que se aplique correctamente
