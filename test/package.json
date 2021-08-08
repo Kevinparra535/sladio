@@ -10,6 +10,6 @@
   "author": "Kevin Parra Lopez <kevinparra535@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "sladio": "^1.0.11"
+    "sladio": "^1.0.12"
   }
 }
