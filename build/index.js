@@ -11,11 +11,11 @@ var _createClass = function () { function defineProperties(target, props) { for 
 /* eslint-disable no-plusplus */
 /* eslint-disable no-param-reassign */
 
-var _configDefault = require('./core/configDefault');
+var _configDefault = require('./core/utils/configDefault');
 
 var configDefault = _interopRequireWildcard(_configDefault);
 
-var _autoCompleteSettings = require('./core/autoCompleteSettings');
+var _autoCompleteSettings = require('./core/utils/autoCompleteSettings');
 
 var _autoCompleteSettings2 = _interopRequireDefault(_autoCompleteSettings);
 
@@ -27,9 +27,9 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-exports.sladio = function () {
-  function _class(config) {
-    _classCallCheck(this, _class);
+var Sladio = function () {
+  function Sladio(config) {
+    _classCallCheck(this, Sladio);
 
     this._config = config;
     this.firtsSlider = null;
@@ -46,6 +46,8 @@ exports.sladio = function () {
     this.createNavsButtons = this.createNavsButtons.bind(this);
     this.createDefaultSettings = this.createDefaultSettings.bind(this);
     this.createIndicators = this.createIndicators.bind(this);
+    this.progressBarIndicator = this.progressBarIndicator.bind(this);
+    this.fractionIndicator = this.fractionIndicator.bind(this);
 
     if (!Object.keys(this._config).length) {
       // Si no recibe un objeto con la configuración, creamos una configuración global
@@ -64,7 +66,7 @@ exports.sladio = function () {
   // Si recibe un objeto de configuración lo asignamos a nuestra variable y Verificamos si no hay un parámetro se lo asignamos
 
 
-  _createClass(_class, [{
+  _createClass(Sladio, [{
     key: 'createDefaultSettings',
     value: function createDefaultSettings() {
 
@@ -108,6 +110,7 @@ exports.sladio = function () {
         var navsButtons = _this2._config.navsButtons;
 
         var container = slider.querySelector('.sladio__container');
+        var defaultStyles = slider.getAttribute('data-style') || 'default';
 
         // Si el contenedor no existe, creamos uno
         if (!container) {
@@ -131,11 +134,16 @@ exports.sladio = function () {
           }
         }
 
-        // Activamos los movimientos básicos del slider, un segundo despues
+        // Activamos los movimientos básicos del slider, un segundo después
         // Esto para que verifique si los contenedores exiten
-        setTimeout(function () {
-          return _this2.createDefaultSlider(slider);
-        }, 1000);
+        if (defaultStyles === 'default' || defaultStyles === null) {
+          setTimeout(function () {
+            return _this2.createDefaultSlider(slider, defaultStyles);
+          }, 1000);
+        }
+
+        // Si esta iniciado algun demo lo iniciamos aqui
+        // if(){}
 
         // Si los navs están activos
         if (navsButtons) {
@@ -146,16 +154,6 @@ exports.sladio = function () {
             _this2.createNavsButtons(slider, navsButtons);
           }
         }
-
-        // Si la paginacion esta activa, hacemos el llamado a nuestro metodo
-        // if (pagination) {
-        //   const { pagActive } = pagination[slider.getAttribute('id')];
-
-
-        //   if (pagActive) {
-        //     this.createIndicators(pagination)
-        //   }
-        // }
       });
     }
 
@@ -171,13 +169,42 @@ exports.sladio = function () {
 
       var _config$customSetting = this._config.customSettings[slider.getAttribute('id')],
           active = _config$customSetting.active,
+          orientation = _config$customSetting.orientation,
+          type = _config$customSetting.type,
           desktop = _config$customSetting.desktop,
           tablet = _config$customSetting.tablet,
           mobile = _config$customSetting.mobile;
 
+      var pagActive = this._config.pagination[slider.getAttribute('id')].pagActive;
+
+      console.log(orientation, type); // Estamos agregando el modo vertical
+
+      // Si la orientación es vertical
+      if (orientation === 'vertical') {
+        container.classList.add('' + orientation);
+
+        for (var i = 0; i < items.length; i++) {
+          items[i].classList.add('sladio__items-start');
+        }
+      }
+
+      // Si la orientación es horizontal
+      if (orientation === 'horizontal') {
+        container.classList.add('' + orientation);
+
+        for (var _i = 0; _i < items.length; _i++) {
+          items[_i].classList.add('sladio__items-start');
+        }
+      }
+
       if (active) {
         // Detecta el numero de items por slide y verifica el tamaño de la ventana
         this.responsiveSlides(items, desktop, tablet, mobile, container);
+      }
+
+      if (pagActive) {
+        // Iniciamos el creador de indicadores
+        this.createIndicators(slider, orientation);
       }
 
       var changeSlide = function changeSlide(e) {
@@ -210,9 +237,6 @@ exports.sladio = function () {
         return e.preventDefault(), _this3.dragStart = e.clientX;
       });
       container.addEventListener('mouseup', changeSlide, true);
-
-      // Iniciamos el creador de indicadores
-      this.createIndicators(slider);
     }
 
     // Crea los botones de navegación
@@ -234,8 +258,8 @@ exports.sladio = function () {
       var prevButton = document.createElement('button');
       var nextButton = document.createElement('button');
 
-      var textPrev = document.createTextNode('Back');
-      var textNext = document.createTextNode('Next');
+      var textPrev = document.createTextNode('<');
+      var textNext = document.createTextNode('>');
 
       prevButton.className = btnPrev;
       nextButton.className = btnNext;
@@ -292,15 +316,103 @@ exports.sladio = function () {
       }
     }
 
+    // Muestra el siguiente item
+
+  }, {
+    key: 'nextSlide',
+    value: function nextSlide(slider, container, items) {
+      this.slider = slider;
+      this.container = container;
+      this.items = items;
+
+      var pagActive = this._config.pagination[slider.getAttribute('id')].pagActive;
+
+      if (pagActive) {
+
+        // Modo infinito, esto detecta cuando el ultimo bullet este activo para iniciar el conteo de 0
+        if (!slider.querySelector('.sladio__indicator__bullets a:last-child').classList.contains('bullet_selected')) {
+          container.scrollLeft += slider.scrollWidth; // Muestra el siguiente item
+        } else {
+          slider.querySelector('.sladio__indicator__bullets a:first-child').click();
+          container.scrollLeft = 0;
+        }
+      } else {
+
+        container.scrollLeft += slider.scrollWidth; // Muestra el siguiente item
+      }
+    }
+
+    // Muestra el anterior item
+
+  }, {
+    key: 'prevSlide',
+    value: function prevSlide(slider, container) {
+      this.slider = slider;
+      this.container = container;
+
+      var pagActive = this._config.pagination[slider.getAttribute('id')].pagActive;
+
+      if (pagActive) {
+
+        // Modo infinito, esto detecta cuando el primer bullet este activo para iniciar el conteo desde el ultimo
+        if (!slider.querySelector('.sladio__indicator__bullets a:first-child').classList.contains('bullet_selected')) {
+          container.scrollLeft -= slider.scrollWidth; // Muestra el anterior item
+        } else {
+          slider.querySelector('.sladio__indicator__bullets a:last-child').click();
+          slider.scrollLeft = slider.scrollWidth - container.scrollWidth; // Muestra el anterior item
+        }
+      } else {
+        container.scrollLeft -= slider.scrollWidth; // Muestra el anterior item
+      }
+    }
+
     // Crea los bullets o indicadores de posición
 
   }, {
     key: 'createIndicators',
-    value: function createIndicators(slider) {
+    value: function createIndicators(slider, orientation) {
+
+      this.orientation = orientation;
+
       var container = slider.querySelector('.sladio__container');
       var items = container.querySelectorAll('.sladio__items');
 
+      var _config$pagination$sl = this._config.pagination[slider.getAttribute('id')],
+          interactive = _config$pagination$sl.interactive,
+          type = _config$pagination$sl.type;
+
+      var indicator = document.createElement('div');
+
+      this.progressBarIndicator(slider, container);
+      this.fractionIndicator(slider, container, items, indicator);
+      this.bulletIndicator(slider, container, items, indicator, interactive, orientation);
+
       // Barra de progreso
+      // Si el tipo de indicador no es progressbar y los indicadores no estan activos, Ocultamos el contenedor
+      if (type !== 'progressbar') {
+        slider.querySelector('.sladio__progressbar').style.display = 'none';
+      }
+
+      // Fracciones
+      // Si el tipo de indicador no es fractions y los indicadores no estan activos, Ocultamos el contenedor
+      if (type !== 'fraction') {
+        slider.querySelector('.sladio__indicator p').style.display = 'none';
+      }
+
+      // Bullets
+      // Si el tipo de indicador no es progressbar y los indicadores no estan activos, Ocultamos el contenedor
+      if (type !== 'bullets') {
+        slider.querySelector('.sladio__indicator__bullets').style.display = 'none';
+      }
+    }
+
+    // Barra de progreso
+
+  }, {
+    key: 'progressBarIndicator',
+    value: function progressBarIndicator(slider, container) {
+      this.slider = slider;
+      this.container = container;
 
       // Creamos el contenedor y la barra de progreso
       var progressBar = document.createElement('div');
@@ -331,15 +443,19 @@ exports.sladio = function () {
 
       // Escuchamos el evento scroll
       container.addEventListener('scroll', updateProgressBar, true);
+    }
 
-      // Fracciones
+    // Fracciones
+
+  }, {
+    key: 'fractionIndicator',
+    value: function fractionIndicator(slider, container, items, indicator) {
 
       // Creamos el contenedor donde se van a mostrar el texto
-      var fractions = document.createElement('div');
       var fractionContainer = document.createElement('p');
       var fractionText = document.createTextNode('0 / ' + (items.length - 1));
 
-      fractions.className = 'sladio__indicator';
+      indicator.className = 'sladio__indicator';
       fractionContainer.appendChild(fractionText);
 
       // Asigamos el texto a los items
@@ -347,11 +463,11 @@ exports.sladio = function () {
         items[i].setAttribute('data-index', i + ' / ' + (items.length - 1));
       }
 
-      fractions.append(fractionContainer);
+      indicator.append(fractionContainer);
 
       // Si el contenedor no existe, agregalo
       if (!slider.querySelector('.sladio__indicator')) {
-        slider.append(fractions);
+        slider.append(indicator);
       }
 
       // Mostramos los indicadores por fracciones
@@ -361,33 +477,78 @@ exports.sladio = function () {
 
       // Cada vez que el slider hace scroll, actualizamos los indicadores
       container.addEventListener('scroll', updateFractions, true);
-
-      // Bullets
     }
 
-    // Muestra el siguiente item
+    // Bullets
 
   }, {
-    key: 'nextSlide',
-    value: function nextSlide(slider, container, items) {
-      this.slider = slider;
-      this.container = container;
-      this.items = items;
+    key: 'bulletIndicator',
+    value: function bulletIndicator(slider, container, items, indicator, interactive, orientation) {
+      var bulletsContainer = document.createElement('div');
+      var itemsToShow = this.desktop.itemsToShow;
 
-      // if (container.scrollLeft / items.length - 2 !== slider.scrollWidth) {
-      // }
 
-      container.scrollLeft += slider.scrollWidth; // Muestra el siguiente item
-    }
+      console.log(orientation);
 
-    // Muestra el anterior item
+      bulletsContainer.className = 'sladio__indicator__bullets';
+      indicator.classList.add('' + orientation);
+      indicator.append(bulletsContainer);
 
-  }, {
-    key: 'prevSlide',
-    value: function prevSlide(slider, container) {
-      this.slider = slider;
-      this.container = container;
-      container.scrollLeft -= slider.scrollWidth; // Muestra el anterior item
+      // Asigamos el id a los items
+      for (var i = 0; i < items.length; i++) {
+        items[i].setAttribute('id', '' + i);
+      }
+
+      // Creamos los bullets, e invocamos el id de cada item
+      for (var _i2 = 0; _i2 < items.length; _i2++) {
+        if (_i2 % itemsToShow === 0) bulletsContainer.innerHTML += '<a class="bullets" href="#' + _i2 + '" data-index=' + _i2 + '></a>';
+      }
+
+      // Traemos todos los bullets del contenedor
+      var allBullets = slider.querySelectorAll('.bullets');
+      allBullets[0].classList.add('bullet_selected');
+
+      // Si interactive no esta activado, desactiva la función click
+      if (!interactive) {
+
+        for (var _i3 = 0; _i3 < allBullets.length; _i3++) {
+          allBullets[_i3].addEventListener('click', function (e) {
+            return e.preventDefault();
+          });
+        }
+      }
+
+      // Esta función nos indicará cual elemento debe de mostrarse
+      var setSelected = function setSelected() {
+
+        // Removemos la clase active de los bullets
+        allBullets.forEach(function (bullet) {
+          bullet.classList.remove('bullet_selected');
+        });
+
+        // Si la orientación es horizontal
+        if (orientation === 'horizontal') {
+
+          // Escuchamos la posición del elemento
+          var nthChild = Math.round(container.scrollLeft / slider.scrollWidth) + 1;
+
+          // Asignamos la clase dependiendo de la posición del scroll
+          slider.querySelector('.sladio__indicator__bullets a:nth-child(' + nthChild + ')').classList.add('bullet_selected');
+        }
+
+        // Si la orientación es vertical
+        if (orientation === 'vertical') {
+
+          // Escuchamos la posición del elemento
+          var _nthChild = Math.round(container.scrollTop / slider.scrollHeight) + 1;
+
+          // Asignamos la clase dependiendo de la posición del scroll
+          slider.querySelector('.sladio__indicator__bullets a:nth-child(' + _nthChild + ')').classList.add('bullet_selected');
+        }
+      };
+
+      // Escuchamos el evento scroll del contenedor
+      container.addEventListener("scroll", setSelected);
     }
 
     // Detecta el numero de items por slide y verifica el tamaño de la ventana
@@ -427,8 +588,8 @@ exports.sladio = function () {
         var _showNumOfItems = 100 / _itemsToShow;
         var _convertToPercentage = _showNumOfItems;
 
-        for (var _i = 0; _i < items.length; _i++) {
-          items[_i].style.minWidth = _convertToPercentage.toFixed(2) + '%';
+        for (var _i4 = 0; _i4 < items.length; _i4++) {
+          items[_i4].style.minWidth = _convertToPercentage.toFixed(2) + '%';
         }
 
         // if (itemsToShow !== 1) {
@@ -446,8 +607,8 @@ exports.sladio = function () {
 
         var _convertToPercentage2 = _showNumOfItems2;
 
-        for (var _i2 = 0; _i2 < items.length; _i2++) {
-          items[_i2].style.minWidth = _convertToPercentage2.toFixed(2) + '%';
+        for (var _i5 = 0; _i5 < items.length; _i5++) {
+          items[_i5].style.minWidth = _convertToPercentage2.toFixed(2) + '%';
         }
 
         // if (itemsToShow !== 1) {
@@ -469,9 +630,9 @@ exports.sladio = function () {
     }
   }]);
 
-  return _class;
+  return Sladio;
 }();
 
 // export default Sladio;
 
-// module.exports = Sladio;
+module.exports = Sladio;

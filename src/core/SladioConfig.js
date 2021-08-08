@@ -29,8 +29,8 @@ export const sladioConfig = {
       dynamicBullets: false,
     },
     slider2: {
-      pagActive: false,
-      type: 'progressbar', // bullets, fraction, progressbar, scrollbar,
+      pagActive: true,
+      type: 'bullets', // bullets, fraction, progressbar, scrollbar,
       interactive: false,
       dynamicBullets: false,
     },
@@ -49,6 +49,8 @@ export const sladioConfig = {
   customSettings: {
     slider1: {
       active: true,
+      type: 'images',
+      orientation: 'horizontal',
       desktop: {
         breakpoint: 991,
         infinity: true,
@@ -69,6 +71,8 @@ export const sladioConfig = {
 
     slider2: {
       active: true,
+      type: 'products',
+      orientation: 'vertical',
       desktop: {
         breakpoint: 991,
         infinity: true,

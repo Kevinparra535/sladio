@@ -112,6 +112,9 @@ class Sladio {
         setTimeout(() => this.createDefaultSlider(slider, defaultStyles), 1000);
       }
 
+      // Si esta iniciado algun demo lo iniciamos aqui
+      // if(){}
+
       // Si los navs están activos
       if (navsButtons) {
         const { navsActive } = navsButtons[slider.getAttribute('id')];
@@ -124,18 +127,30 @@ class Sladio {
   }
 
   // Creamos el sistema por default del slider
-  createDefaultSlider(slider, defaultStyles) {
+  createDefaultSlider(slider) {
     const container = slider.querySelector('.sladio__container');
     const items = container.querySelectorAll('.sladio__items');
-    const { active, desktop, tablet, mobile } = this._config.customSettings[slider.getAttribute('id')];
+    const { active, orientation, type, desktop, tablet, mobile } = this._config.customSettings[slider.getAttribute('id')];
     const { pagActive } = this._config.pagination[slider.getAttribute('id')];
 
-    slider.setAttribute('data-style', defaultStyles)
+    console.log(orientation, type) // Estamos agregando el modo vertical
 
-    container.classList.add('horizontal') // or vertical
+    // Si la orientación es vertical
+    if (orientation === 'vertical') {
+      container.classList.add(`${orientation}`)
 
-    for (let i = 0; i < items.length; i++) {
-      items[i].classList.add('sladio__items-start');
+      for (let i = 0; i < items.length; i++) {
+        items[i].classList.add('sladio__items-start');
+      }
+    }
+
+    // Si la orientación es horizontal
+    if (orientation === 'horizontal') {
+      container.classList.add(`${orientation}`)
+
+      for (let i = 0; i < items.length; i++) {
+        items[i].classList.add('sladio__items-start');
+      }
     }
 
     if (active) {
@@ -145,7 +160,7 @@ class Sladio {
 
     if (pagActive) {
       // Iniciamos el creador de indicadores
-      this.createIndicators(slider);
+      this.createIndicators(slider, orientation);
     }
 
     const changeSlide = (e) => {
@@ -191,8 +206,8 @@ class Sladio {
     const prevButton = document.createElement('button');
     const nextButton = document.createElement('button');
 
-    const textPrev = document.createTextNode('Back');
-    const textNext = document.createTextNode('Next');
+    const textPrev = document.createTextNode('<');
+    const textNext = document.createTextNode('>');
 
     prevButton.className = btnPrev;
     nextButton.className = btnNext;
@@ -291,7 +306,10 @@ class Sladio {
   }
 
   // Crea los bullets o indicadores de posición
-  createIndicators(slider) {
+  createIndicators(slider, orientation) {
+
+    this.orientation = orientation
+
     const container = slider.querySelector('.sladio__container');
     const items = container.querySelectorAll('.sladio__items');
     const { interactive, type } = this._config.pagination[slider.getAttribute('id')]
@@ -300,7 +318,7 @@ class Sladio {
 
     this.progressBarIndicator(slider, container)
     this.fractionIndicator(slider, container, items, indicator)
-    this.bulletIndicator(slider, container, items, indicator, interactive)
+    this.bulletIndicator(slider, container, items, indicator, interactive, orientation)
 
     // Barra de progreso
     // Si el tipo de indicador no es progressbar y los indicadores no estan activos, Ocultamos el contenedor
@@ -390,11 +408,14 @@ class Sladio {
   }
 
   // Bullets
-  bulletIndicator(slider, container, items, indicator, interactive) {
+  bulletIndicator(slider, container, items, indicator, interactive, orientation) {
     const bulletsContainer = document.createElement('div')
     const { itemsToShow } = this.desktop
 
+    console.log(orientation)
+
     bulletsContainer.className = 'sladio__indicator__bullets'
+    indicator.classList.add(`${orientation}`)
     indicator.append(bulletsContainer)
 
     // Asigamos el id a los items
@@ -428,11 +449,25 @@ class Sladio {
         bullet.classList.remove('bullet_selected')
       })
 
-      // Escuchamos la posición del elemento
-      const nthChild = (Math.round(container.scrollLeft / slider.scrollWidth) + 1)
+      // Si la orientación es horizontal
+      if (orientation === 'horizontal') {
 
-      // Asignamos la clase dependiendo de la posición del scroll
-      slider.querySelector(`.sladio__indicator__bullets a:nth-child(${nthChild})`).classList.add('bullet_selected')
+        // Escuchamos la posición del elemento
+        const nthChild = (Math.round(container.scrollLeft / slider.scrollWidth) + 1)
+
+        // Asignamos la clase dependiendo de la posición del scroll
+        slider.querySelector(`.sladio__indicator__bullets a:nth-child(${nthChild})`).classList.add('bullet_selected')
+      }
+
+      // Si la orientación es vertical
+      if (orientation === 'vertical') {
+
+        // Escuchamos la posición del elemento
+        const nthChild = (Math.round(container.scrollTop / slider.scrollHeight) + 1)
+
+        // Asignamos la clase dependiendo de la posición del scroll
+        slider.querySelector(`.sladio__indicator__bullets a:nth-child(${nthChild})`).classList.add('bullet_selected')
+      }
     }
 
     // Escuchamos el evento scroll del contenedor
@@ -511,6 +546,6 @@ class Sladio {
   }
 }
 
-export default Sladio;
+// export default Sladio;
 
-// module.exports = Sladio;
+module.exports = Sladio;

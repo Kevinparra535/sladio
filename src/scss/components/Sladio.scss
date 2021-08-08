@@ -96,33 +96,68 @@
   }
 
   &__indicator {
-    text-align: center;
-    p {
-      width: 100%;
-      background-color: $color-bg-claro;
-    }
-
-    &__bullets {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      .bullets {
-        padding: 5px;
-        margin: $space_half;
-        border-radius: 100%;
-        border: 2px solid $color-primario;
-        transition: 0.2s ease-in-out 0.1s;
-
-        &:hover {
-          background-color: get-opacity($color-primario, 0.2);
-        }
+    &.horizontal {
+      text-align: center;
+      p {
+        width: 100%;
+        background-color: $color-bg-claro;
       }
 
-      .bullet_selected {
-        background-color: $color-primario;
-        &:hover {
+      .sladio__indicator__bullets {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .bullets {
+          padding: 5px;
+          margin: $space_half;
+          border-radius: 100%;
+          border: 2px solid $color-primario;
+          transition: 0.2s ease-in-out 0.1s;
+
+          &:hover {
+            background-color: get-opacity($color-primario, 0.2);
+          }
+        }
+
+        .bullet_selected {
           background-color: $color-primario;
+          &:hover {
+            background-color: $color-primario;
+          }
+        }
+      }
+    }
+
+    &.vertical {
+      position: absolute;
+      top: 50%;
+      right: 10px;
+      transform: translateY(-50%);
+
+      .sladio__indicator__bullets {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+
+        .bullets {
+          padding: 5px;
+          margin: 2px;
+          border-radius: 100%;
+          transition: 0.2s ease-in-out 0.1s;
+          background-color: get-opacity($color-claro, 0.2);
+
+          &:hover {
+            background-color: get-opacity($color-claro, 1);
+          }
+        }
+
+        .bullet_selected {
+          background-color: $color-primario;
+          &:hover {
+            background-color: $color-primario;
+          }
         }
       }
     }
