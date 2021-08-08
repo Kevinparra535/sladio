@@ -1,5 +1,9 @@
 'use strict';
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /* eslint-disable no-restricted-syntax */
 /* eslint-disable no-const-assign */
 /* eslint-disable no-undef */
@@ -177,9 +181,9 @@ var Sladio = function () {
 
       var pagActive = this._config.pagination[slider.getAttribute('id')].pagActive;
 
-      console.log(orientation, type); // Estamos agregando el modo vertical
-
       // Si la orientación es vertical
+
+
       if (orientation === 'vertical') {
         container.classList.add('' + orientation);
 
@@ -633,5 +637,7 @@ var Sladio = function () {
   return Sladio;
 }();
 
-module.exports = Sladio;
-// export default Sladio;
+// module.exports = Sladio;
+
+
+exports.default = Sladio;

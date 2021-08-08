@@ -544,6 +544,6 @@ class Sladio {
   }
 }
 
-// module.exports = Sladio;
-export default Sladio;
+module.exports = Sladio;
+// export default Sladio;
 

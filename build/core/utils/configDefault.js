@@ -16,10 +16,12 @@ exports.default = {
     }
   },
   pagination: {
-    pagActive: false,
-    type: 'none',
-    interactive: false,
-    dynamicBullets: false
+    slider1: {
+      pagActive: false,
+      type: 'bullets',
+      interactive: true,
+      dynamicBullets: false
+    }
   },
   autoSlide: {
     active: false,
@@ -29,23 +31,23 @@ exports.default = {
   supportIE: true,
   customSettings: {
     slider1: {
+      active: true,
+      type: 'images',
+      orientation: 'horizontal',
       desktop: {
         breakpoint: 991,
         infinity: true,
-        dotsAreVisibles: true,
-        itemsToShow: 3,
-        itemsToScroll: 1
+        itemsToShow: 1,
+        dotsAreVisibles: true
       },
       tablet: {
         breakpoint: 990,
         itemsToShow: 2,
-        itemsToScroll: 1,
         infinity: true
       },
       mobile: {
         breakpoint: 730,
         itemsToShow: 1,
-        itemsToScroll: 1,
         infinity: true
       }
     }
