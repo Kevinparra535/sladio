@@ -633,6 +633,5 @@ var Sladio = function () {
   return Sladio;
 }();
 
-// export default Sladio;
-
 module.exports = Sladio;
+// export default Sladio;

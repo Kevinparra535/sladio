@@ -133,8 +133,6 @@ class Sladio {
     const { active, orientation, type, desktop, tablet, mobile } = this._config.customSettings[slider.getAttribute('id')];
     const { pagActive } = this._config.pagination[slider.getAttribute('id')];
 
-    console.log(orientation, type) // Estamos agregando el modo vertical
-
     // Si la orientación es vertical
     if (orientation === 'vertical') {
       container.classList.add(`${orientation}`)
@@ -546,6 +544,6 @@ class Sladio {
   }
 }
 
-// export default Sladio;
+// module.exports = Sladio;
+export default Sladio;
 
-module.exports = Sladio;
