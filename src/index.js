@@ -130,7 +130,7 @@ class Sladio {
   createDefaultSlider(slider) {
     const container = slider.querySelector('.sladio__container');
     const items = container.querySelectorAll('.sladio__items');
-    const { active, orientation, type, desktop, tablet, mobile } = this._config.customSettings[slider.getAttribute('id')];
+    const { active, orientation, desktop, tablet, mobile } = this._config.customSettings[slider.getAttribute('id')];
     const { pagActive } = this._config.pagination[slider.getAttribute('id')];
 
     // Si la orientación es vertical
@@ -164,31 +164,20 @@ class Sladio {
     const changeSlide = (e) => {
       e.preventDefault();
 
-
       this.dragEnd = e.clientX;
+      console.log(this.dragEnd)
+      console.log(this.dragStart)
 
       if (this.dragEnd < this.dragStart) {
-        // if (this.index < items.length - 1) {
-        //   console.log('Next');
-        //   this.index++;
-        // }
-
         this.nextSlide(slider, container, items);
+      }
 
-      } else {
-        // if (this.index > 0) {
-        //   console.log('Prev');
-        //   this.index--;
-        // }
-
-        // if (this.index < 0) {
-        //   this.index = 0;
-        // }
-
+      if (this.dragEnd > this.dragStart) {
         this.prevSlide(slider, container, items);
       }
 
     };
+
 
     container.addEventListener('mousedown', (e) => (e.preventDefault(), (this.dragStart = e.clientX)));
     container.addEventListener('mouseup', changeSlide, true);
@@ -204,8 +193,8 @@ class Sladio {
     const prevButton = document.createElement('button');
     const nextButton = document.createElement('button');
 
-    const textPrev = document.createTextNode('<');
-    const textNext = document.createTextNode('>');
+    const textPrev = document.createTextNode('');
+    const textNext = document.createTextNode('');
 
     prevButton.className = btnPrev;
     nextButton.className = btnNext;
@@ -226,14 +215,14 @@ class Sladio {
       prevButton.style.left = '10px';
       prevButton.style.padding = '5px';
       prevButton.style.cursor = 'pointer';
-      prevButton.style.width = 'auto';
+      // prevButton.style.width = 'auto';
 
       nextButton.style.position = 'absolute';
       nextButton.style.top = '50%';
       nextButton.style.right = '10px';
       nextButton.style.padding = '5px';
       nextButton.style.cursor = 'pointer';
-      nextButton.style.width = 'auto';
+      // nextButton.style.width = 'auto';
     }
 
     if (position === 'bottom') {
@@ -544,6 +533,6 @@ class Sladio {
   }
 }
 
-module.exports = Sladio;
-// export default Sladio;
+// module.exports = Sladio;
+export default Sladio;
 

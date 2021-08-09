@@ -68,12 +68,8 @@
     -webkit-user-select: none;
     -ms-user-select: none; /* IE and Edge */
     user-select: none;
-    background-color: get-opacity($color-primario, 0.2);
-
-    &:nth-child(even) {
-      color: $color-claro;
-      background-color: $color-oscuro;
-    }
+    color: $color-oscuro;
+    background-color: $color-claro;
 
     &-start {
       scroll-snap-align: start;
@@ -112,11 +108,11 @@
           padding: 5px;
           margin: $space_half;
           border-radius: 100%;
-          border: 2px solid $color-primario;
+          background-color: get-opacity($color-oscuro, 0.2);
           transition: 0.2s ease-in-out 0.1s;
 
           &:hover {
-            background-color: get-opacity($color-primario, 0.2);
+            background-color: get-opacity($color-primario, 0.5);
           }
         }
 
@@ -161,5 +157,33 @@
         }
       }
     }
+  }
+
+  .btn__next {
+    width: 50px;
+    height: 50px;
+    border: none;
+    outline: none;
+    background-color: transparent;
+    content: '' !important;
+    background-image: url('../img/right-arrow.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100%;
+    background-size: cover;
+    }
+
+  .btn__prev {
+    width: 50px;
+    height: 50px;
+    border: none;
+    outline: none;
+    background-color: transparent;
+    content: '' !important;
+    background-image: url('../img/left-arrow.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100%;
+    background-size: cover;
   }
 }

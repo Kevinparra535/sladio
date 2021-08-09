@@ -174,7 +174,6 @@ var Sladio = function () {
       var _config$customSetting = this._config.customSettings[slider.getAttribute('id')],
           active = _config$customSetting.active,
           orientation = _config$customSetting.orientation,
-          type = _config$customSetting.type,
           desktop = _config$customSetting.desktop,
           tablet = _config$customSetting.tablet,
           mobile = _config$customSetting.mobile;
@@ -215,24 +214,14 @@ var Sladio = function () {
         e.preventDefault();
 
         _this3.dragEnd = e.clientX;
+        console.log(_this3.dragEnd);
+        console.log(_this3.dragStart);
 
         if (_this3.dragEnd < _this3.dragStart) {
-          // if (this.index < items.length - 1) {
-          //   console.log('Next');
-          //   this.index++;
-          // }
-
           _this3.nextSlide(slider, container, items);
-        } else {
-          // if (this.index > 0) {
-          //   console.log('Prev');
-          //   this.index--;
-          // }
+        }
 
-          // if (this.index < 0) {
-          //   this.index = 0;
-          // }
-
+        if (_this3.dragEnd > _this3.dragStart) {
           _this3.prevSlide(slider, container, items);
         }
       };
@@ -262,8 +251,8 @@ var Sladio = function () {
       var prevButton = document.createElement('button');
       var nextButton = document.createElement('button');
 
-      var textPrev = document.createTextNode('<');
-      var textNext = document.createTextNode('>');
+      var textPrev = document.createTextNode('');
+      var textNext = document.createTextNode('');
 
       prevButton.className = btnPrev;
       nextButton.className = btnNext;
@@ -288,14 +277,14 @@ var Sladio = function () {
         prevButton.style.left = '10px';
         prevButton.style.padding = '5px';
         prevButton.style.cursor = 'pointer';
-        prevButton.style.width = 'auto';
+        // prevButton.style.width = 'auto';
 
         nextButton.style.position = 'absolute';
         nextButton.style.top = '50%';
         nextButton.style.right = '10px';
         nextButton.style.padding = '5px';
         nextButton.style.cursor = 'pointer';
-        nextButton.style.width = 'auto';
+        // nextButton.style.width = 'auto';
       }
 
       if (position === 'bottom') {

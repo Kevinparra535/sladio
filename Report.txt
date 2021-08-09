@@ -33,6 +33,10 @@ Paquetes 📦
 
 Progreso (Bitácoras) 🚀
 
+(9/08/2021)
+- Se agrego los navs por defecto
+- Se soluciono el bug al hacer click al dom y que cambie el slide
+
 (3/08/2021)
 - Re distribuimos los estilos para el slider vertical
 - Re distribuimos las carpetas para los demos y variantes

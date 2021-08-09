@@ -4,6 +4,7 @@ Slider customizable
 
 ## New Fetures 🤩
 
+- Se agrego los navs por defecto
 - Agregamos los bullets y su interacción
 - Se acondicionó el modo infinito
 - Creamos los indicadores
@@ -31,6 +32,11 @@ Slider customizable
 
 
 ## Progreso (Bitácoras) 🚀
+
+
+## (9/08/2021)
+- Se agrego los navs por defecto
+- Se soluciono el bug al hacer click al dom y que cambie el slide
 
 ### (3/08/2021)
 - Agregamos los bullets y su interacción

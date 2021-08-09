@@ -28,8 +28,8 @@ var sladioConfig = exports.sladioConfig = {
 
   pagination: {
     slider1: {
-      pagActive: false,
-      type: 'bullets', // bullets, fraction, progressbar, scrollbar,
+      pagActive: true,
+      type: 'none', // bullets, fraction, progressbar, scrollbar,
       interactive: true,
       dynamicBullets: false
     },
