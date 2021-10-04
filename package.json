@@ -11,7 +11,7 @@
     "build": "npm run lint && npm run test && npm run format"
   },
   "bin": {
-    "sladio": "./bin/global.js"
+    "sladio": "bin/global.js"
   },
   "preferGlobal": true,
   "keywords": [
@@ -43,5 +43,13 @@
     "eslint-plugin-prettier": "^3.4.0",
     "eslint-plugin-react": "^7.24.0",
     "prettier": "^2.3.2"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Kevinparra535/sladio.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Kevinparra535/sladio/issues"
+  },
+  "homepage": "https://github.com/Kevinparra535/sladio#readme"
 }
