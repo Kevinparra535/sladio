@@ -3,3 +3,4 @@ test/
 src/core/core.css
 index-dist.js
 bin/
+src/index.js
