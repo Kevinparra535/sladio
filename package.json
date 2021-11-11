@@ -1,6 +1,6 @@
 {
   "name": "sladio",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "Sladio es un Slider muy customizable",
   "main": "index.js",
   "scripts": {
