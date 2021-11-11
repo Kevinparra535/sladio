@@ -70,11 +70,16 @@ class Sladio {
 				element[1].id = element.length + 1;
 			}
 
+      // Si no estan los objetos de configuracion, los creamos
+      this.config.navegation === undefined && (this.config.navegation = {});
+			this.config.pagination === undefined && (this.config.pagination = {});
+			this.config.responsive === undefined && (this.config.responsive = {});
+
 			/// NAVEGACION ///
 			const navegation = this.config.navegation[slider.id];
 
 			if (navegation === undefined || navegation === null) {
-				this.report('warn', 'yellow', `Se crea navegacion para el ${slider.id}`);
+				this.report('warn', 'orange', `Se crea navegacion para el ${slider.id}`);
 
 				const navegationDefault$1 = navegationDefault;
 
@@ -85,7 +90,7 @@ class Sladio {
 			const pagination = this.config.pagination[slider.id];
 
 			if (pagination === undefined || pagination === null) {
-				this.report('warn', 'yellow', `Se crea paginación para el ${slider.id}`);
+				this.report('warn', 'orange', `Se crea paginación para el ${slider.id}`);
 
 				const paginationDefault$1 = paginationDefault;
 
@@ -97,7 +102,7 @@ class Sladio {
 			const responsive = this.config.responsive[slider.id];
 
 			if (responsive === undefined || responsive === null) {
-				this.report('warn', 'yellow', `Se crea responsive para el ${slider.id}`);
+				this.report('warn', 'orange', `Se crea responsive para el ${slider.id}`);
 
 				const responsiveDefault$1 = responsiveDefault;
 
