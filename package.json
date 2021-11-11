@@ -1,19 +1,13 @@
 {
   "name": "sladio",
-  "version": "1.1.2",
-  "description": "Sladio es un Slider muy customizable",
-  "main": "index.js",
+  "version": "0.0.1",
+  "description": "Sladio",
+	"main": "dist/sladio.js",
+	"jsnext:main": "dist/sladio.module.js",
+	"module": "dist/sladio.module.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "format": "prettier --write '{*.js,src/**/*.{js,jsx}}'",
-    "lint": "eslint src/ --fix",
-    "compile": "babel src -d build",
-    "build": "npm run lint && npm run test && npm run format"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "bin": {
-    "sladio": "bin/global.js"
-  },
-  "preferGlobal": true,
   "keywords": [
     "JavaScript",
     "node",
@@ -31,23 +25,7 @@
   ],
   "author": "Kevin Parra Lopez <kevinparra535@gmail.com>",
   "license": "MIT",
-  "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-preset-es2015": "^6.24.1",
-    "cypress": "^8.0.0",
-    "eslint": "^7.31.0",
-    "eslint-config-airbnb": "^18.2.1",
-    "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-import": "^2.23.4",
-    "eslint-plugin-jsx-a11y": "^6.4.1",
-    "eslint-plugin-prettier": "^3.4.0",
-    "eslint-plugin-react": "^7.24.0",
-    "prettier": "^2.3.2"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Kevinparra535/sladio.git"
-  },
+  "repository": "Kevinparra535/sladio.git",
   "bugs": {
     "url": "https://github.com/Kevinparra535/sladio/issues"
   },
